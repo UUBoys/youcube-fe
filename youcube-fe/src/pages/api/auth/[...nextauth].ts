@@ -14,7 +14,6 @@ export const AUTH_ROUTES = {
 
 export const authOptions: NextAuthOptions = {
   pages: AUTH_ROUTES,
-  secret: process.env.NEXT_AUTH_SECRET,
   session: { strategy: "jwt" },
   providers: [
     GoogleProvider({
@@ -36,8 +35,8 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
+        console.log(credentials);
         const creds = await signInSchema.parseAsync(credentials);
-
         console.log(creds);
         return { id: "1", name: "Morzi", email: "" };
       },
@@ -45,6 +44,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
+      console.log(user);
       return (
         user.email?.endsWith("@edhance.cz") ||
         ["lobiklukas@gmail.com"].includes(user.email || "") ||
@@ -63,6 +63,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }) {
+      console.log("test", token);
       const tokenCopy = { ...token };
       if (user) {
         tokenCopy.id = user.id;

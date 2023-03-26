@@ -2,6 +2,7 @@
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 // eslint-disable-next-line camelcase
 import { getServerSession } from "next-auth";
+
 import { authOptions, AUTH_ROUTES } from "src/pages/api/auth/[...nextauth]";
 
 export const requireAuth =
