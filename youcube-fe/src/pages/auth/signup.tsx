@@ -4,7 +4,7 @@ import { CtxOrReq } from "next-auth/client/_utils";
 import { getProviders, getSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
-import { RegisterMutation } from "../api/auth/mutations/UserMutations";
+import { RegisterMutation } from "../../modules/mutations/UserMutations";
 
 import { IRegister, signUpSchema } from "@/modules/utils/schemas/auth";
 
