@@ -14,7 +14,24 @@ const mockData = {
 
 const Thumbnail: React.FC = () => {
   return (
-
+    <div className="w-[250px] relative">
+      <Image src={mockData.thumbnailUrl} alt="Thumbnail" width={250} height={125} className="rounded-lg" />
+      <p className="text-xs text-gray-400">
+        {mockData.authorName}
+      </p>
+      <p className="text-md">
+        {mockData.authorName}
+      </p>
+      <div className="w-full flex justify-between">
+        <p className="text-xs text-gray-400">
+          {mockData.views} views
+        </p>
+        <p className="text-xs text-gray-400">
+          {mockData.publishedAt}
+        </p>
+      </div>
+      <Image src={mockData.authorPofilePictureUrl} alt="Profile" width={40} height={40} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
+    </div>
   );
 };
 

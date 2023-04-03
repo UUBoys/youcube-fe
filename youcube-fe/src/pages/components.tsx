@@ -7,7 +7,7 @@ import Thumbnail from "@/modules/common/components/Thumbnail";
 
 const components: NextPage = () => {
   return (
-    <div className="flex-1">
+    <div className="flex flex-row space-x-3">
       <Thumbnail />
       <Thumbnail />
       <Thumbnail />
