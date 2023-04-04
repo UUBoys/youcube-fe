@@ -1,6 +1,13 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable tailwindcss/classnames-order */
+/* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable import/no-extraneous-dependencies */
-import { getProviders, getSession, signIn } from "next-auth/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { useSessionUser } from "@/modules/hooks/storageHooks/useSessionUser";
+import { LoginMutation } from "@/modules/mutations/UserMutations";
 
 type LoginValues = {
   email: string;
@@ -9,14 +16,24 @@ type LoginValues = {
 
 export const SignIn = () => {
   const { register, handleSubmit } = useForm<LoginValues>();
+  const { mutateAsync } = LoginMutation();
+  const [defaultError, setDefaultError] = useState("");
 
-  const handleCredentialsLogin = ({ email, password }: LoginValues) => {
-    console.log(email, password);
-    signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "/",
-    });
+  const [_sessionUser, setSessionUser] = useSessionUser();
+  const handleCredentialsLogin = async ({ email, password }: LoginValues) => {
+    const res = await mutateAsync({ email, password });
+    if (res.error) {
+      if (res.error === "Unauthorized") {
+        setDefaultError("Špatné heslo nebo email");
+        return;
+      }
+      setDefaultError(res.error);
+      return;
+    }
+
+    if (res.user && res.jwt) {
+      setSessionUser(res);
+    }
   };
 
   return (
@@ -26,6 +43,9 @@ export const SignIn = () => {
           LOGIN
         </div>
         <div className="w-full ">
+          {defaultError !== "" && (
+            <p className="mt-2 text-xl italic text-red-500">{defaultError}</p>
+          )}
           <form action="" onSubmit={handleSubmit(handleCredentialsLogin)}>
             <div className="mb-6">
               <label
@@ -68,22 +88,6 @@ export const SignIn = () => {
       </div>
     </div>
   );
-};
-
-export const getServerSideProps = async (context: any) => {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  const providers = await getProviders();
-  return {
-    props: { providers },
-  };
 };
 
 export default SignIn;

@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CtxOrReq } from "next-auth/client/_utils";
-import { getProviders, getSession } from "next-auth/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { RegisterMutation } from "../../modules/mutations/UserMutations";
 
+import { useSessionUser } from "@/modules/hooks/storageHooks/useSessionUser";
 import { IRegister, signUpSchema } from "@/modules/utils/schemas/auth";
 
 const SignUp: React.FC = () => {
@@ -16,16 +16,20 @@ const SignUp: React.FC = () => {
   } = useForm<IRegister>({
     resolver: zodResolver(signUpSchema),
   });
-
+  const [defaultError, setDefaultError] = useState<string>("");
   const { mutateAsync } = RegisterMutation();
-
+  const [sessionUser, setSessionUser] = useSessionUser();
   const handleSignUp = async ({
     name,
     email,
     password,
     passwordCheck,
   }: IRegister) => {
+    setDefaultError("");
     const res = await mutateAsync({ email, name, password, passwordCheck });
+    if (res.error) {
+      setDefaultError(res.error);
+    }
     console.log(res);
   };
 
@@ -35,6 +39,9 @@ const SignUp: React.FC = () => {
         <div className="w-full text-center text-3xl font-bold text-black">
           Register
         </div>
+        {defaultError !== "" && (
+          <p className="mt-2 text-xl italic text-red-500">{defaultError}</p>
+        )}
         <div className="w-full ">
           <form action="" onSubmit={handleSubmit(handleSignUp)}>
             <div className="mb-6">
@@ -128,22 +135,6 @@ const SignUp: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export const getServerSideProps = async (context: CtxOrReq) => {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  const providers = await getProviders();
-  return {
-    props: { providers },
-  };
 };
 
 export default SignUp;
