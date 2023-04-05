@@ -8,8 +8,8 @@ export const userSchema = z.object({
 
 export const userSessionSchema = z
   .object({
-    jwt: z.string(),
-    user: userSchema,
+    jwt: z.string().optional(),
+    user: userSchema.optional(),
   })
   .optional();
 

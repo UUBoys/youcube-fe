@@ -3,10 +3,12 @@
 /* eslint-disable tailwindcss/classnames-order */
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable import/no-extraneous-dependencies */
-import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useSessionUser } from "@/modules/hooks/storageHooks/useSessionUser";
+import { useSetUserSessionContext } from "@/modules/contexts/userContext";
 import { LoginMutation } from "@/modules/mutations/UserMutations";
 
 type LoginValues = {
@@ -16,10 +18,15 @@ type LoginValues = {
 
 export const SignIn = () => {
   const { register, handleSubmit } = useForm<LoginValues>();
-  const { mutateAsync } = LoginMutation();
+  const { mutateAsync, isLoading, isSuccess, isError } = LoginMutation();
   const [defaultError, setDefaultError] = useState("");
+  const router = useRouter();
 
-  const [_sessionUser, setSessionUser] = useSessionUser();
+  const setSessionUser = useSetUserSessionContext();
+  useEffect(() => {
+    setSessionUser({});
+  }, [setSessionUser]);
+
   const handleCredentialsLogin = async ({ email, password }: LoginValues) => {
     const res = await mutateAsync({ email, password });
     if (res.error) {
@@ -33,6 +40,7 @@ export const SignIn = () => {
 
     if (res.user && res.jwt) {
       setSessionUser(res);
+      router.push("/", undefined, { shallow: false });
     }
   };
 
@@ -40,7 +48,7 @@ export const SignIn = () => {
     <div className="flex h-full w-full items-center bg-white">
       <div className="mx-auto flex h-[500px] w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
-          LOGIN
+          Přihlášení
         </div>
         <div className="w-full ">
           {defaultError !== "" && (
@@ -81,9 +89,15 @@ export const SignIn = () => {
               type="submit"
               className="w-full rounded-lg bg-secondary-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-primary-200 focus:outline-none focus:ring-4  "
             >
-              Submit
+              Přihlásit se
             </button>
           </form>
+          <Link
+            href="/auth/signup"
+            className="mt-3 block text-center text-sm font-light text-gray-600 dark:text-white"
+          >
+            Nemáte účet? Zaregistrujte se
+          </Link>
         </div>
       </div>
     </div>

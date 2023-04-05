@@ -1,11 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 
-import { useSessionUser } from "@/modules/hooks/storageHooks/useSessionUser";
-
 const Home: NextPage = () => {
-  const [sessionUser, setSessionUser] = useSessionUser();
-  console.log(sessionUser);
   return (
     <Head>
       <title>Create Next App</title>
