@@ -1,5 +1,7 @@
 import Image from "next/image";
 import React from "react";
+import { formatDistance } from "date-fns";
+import { cs } from "date-fns/locale";
 
 const mockData = {
   title: "Thumbnail",
@@ -14,23 +16,30 @@ const mockData = {
 
 const Thumbnail: React.FC = () => {
   return (
-    <div className="w-[250px] relative">
-      <Image src={mockData.thumbnailUrl} alt="Thumbnail" width={250} height={125} className="rounded-lg" />
+    <div className="w-[400px] cursor-pointer relative">
+      <Image src={mockData.thumbnailUrl} alt="Thumbnail" width={400} height={225} className="rounded-lg" />
       <p className="text-xs text-gray-400">
         {mockData.authorName}
       </p>
-      <p className="text-md">
-        {mockData.authorName}
+      <p className="text-md text-black">
+        {mockData.title}
       </p>
       <div className="w-full flex justify-between">
         <p className="text-xs text-gray-400">
           {mockData.views} views
         </p>
         <p className="text-xs text-gray-400">
-          {mockData.publishedAt}
+          {formatDistance(
+            new Date(mockData.publishedAt),
+            new Date(),
+            {
+              addSuffix: true,
+              // locale: cs 
+            },
+          )}
         </p>
       </div>
-      <Image src={mockData.authorPofilePictureUrl} alt="Profile" width={40} height={40} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
+      <Image src={mockData.authorPofilePictureUrl} alt="Profile" width={80} height={80} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
     </div>
   );
 };
