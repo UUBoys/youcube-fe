@@ -1,6 +1,15 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable tailwindcss/classnames-order */
+/* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable import/no-extraneous-dependencies */
-import { getProviders, getSession, signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { useSetUserSessionContext } from "@/modules/contexts/userContext";
+import { LoginMutation } from "@/modules/mutations/UserMutations";
 
 type LoginValues = {
   email: string;
@@ -9,23 +18,42 @@ type LoginValues = {
 
 export const SignIn = () => {
   const { register, handleSubmit } = useForm<LoginValues>();
+  const { mutateAsync, isLoading, isSuccess, isError } = LoginMutation();
+  const [defaultError, setDefaultError] = useState("");
+  const router = useRouter();
 
-  const handleCredentialsLogin = ({ email, password }: LoginValues) => {
-    console.log(email, password);
-    signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "/",
-    });
+  const setSessionUser = useSetUserSessionContext();
+  useEffect(() => {
+    setSessionUser({});
+  }, [setSessionUser]);
+
+  const handleCredentialsLogin = async ({ email, password }: LoginValues) => {
+    const res = await mutateAsync({ email, password });
+    if (res.error) {
+      if (res.error === "Unauthorized") {
+        setDefaultError("Špatné heslo nebo email");
+        return;
+      }
+      setDefaultError(res.error);
+      return;
+    }
+
+    if (res.user && res.jwt) {
+      setSessionUser(res);
+      router.push("/", undefined, { shallow: false });
+    }
   };
 
   return (
     <div className="flex h-full w-full items-center bg-white">
       <div className="mx-auto flex h-[500px] w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
-          LOGIN
+          Přihlášení
         </div>
         <div className="w-full ">
+          {defaultError !== "" && (
+            <p className="mt-2 text-xl italic text-red-500">{defaultError}</p>
+          )}
           <form action="" onSubmit={handleSubmit(handleCredentialsLogin)}>
             <div className="mb-6">
               <label
@@ -61,29 +89,19 @@ export const SignIn = () => {
               type="submit"
               className="w-full rounded-lg bg-secondary-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-primary-200 focus:outline-none focus:ring-4  "
             >
-              Submit
+              Přihlásit se
             </button>
           </form>
+          <Link
+            href="/auth/signup"
+            className="mt-3 block text-center text-sm font-light text-gray-600 dark:text-white"
+          >
+            Nemáte účet? Zaregistrujte se
+          </Link>
         </div>
       </div>
     </div>
   );
-};
-
-export const getServerSideProps = async (context: any) => {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  const providers = await getProviders();
-  return {
-    props: { providers },
-  };
 };
 
 export default SignIn;

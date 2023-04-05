@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import "@/modules/common/styles/globals.css";
+import { UserSessionContextProvider } from "@/modules/contexts/userContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,7 +16,9 @@ const queryClient = new QueryClient({
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
+      <UserSessionContextProvider>
+        <Component {...pageProps} />
+      </UserSessionContextProvider>
     </QueryClientProvider>
   );
 };
