@@ -1,46 +1,93 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { formatDistance } from "date-fns";
 import { cs } from "date-fns/locale";
+import { IVideo } from "@/modules/utils/schemas/video";
+import Link from "next/link";
 
-const mockData = {
-  title: "Thumbnail",
-  authorName: "Author Name",
-  views: 100,
-  publishedAt: "2021-01-01",
-  thumbnailUrl:
-    "https://uuapp.plus4u.net/uu-appbinarystore-maing02/eb5f2c8c7a06433b9188316ea37cdb1d/binary/getData?accessKey=0cf4cccd803b0f4ca717714009b0bccb.27436102.9b7ea4cbd6663d5f2118ee6436ac0166975183d9&clientAwid=9bbeae2d272b4b28b0f0b3772ce4642d&dataKey=prod1-small_unicorn_cooperation",
-  authorPofilePictureUrl:
-    "https://s3.amazonaws.com/www-inside-design/uploads/2020/10/aspect-ratios-blogpost-1x1-1.png",
-};
+interface ThumbnailProps {
+  video: IVideo
+  additionalStyles?: string
+}
 
-const Thumbnail: React.FC = () => {
+const Thumbnail: React.FC<ThumbnailProps> = ({ video, additionalStyles }: ThumbnailProps) => {
+  const youtube_video_id = video.url.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)?.pop();
+
+  const [hovering, setHovering] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  const handleOnMouseEnter = () => {
+    const id = setTimeout(() => {
+      setHovering(true);
+    }, 300);
+    setTimeoutId(id);
+
+  };
+
+  const handleOnMouseLeave = () => {
+    timeoutId && clearTimeout(timeoutId);
+    setHovering(false); setLoading(true);
+  };
+
+  const handleIframeLoad = () => {
+    setLoading(false);
+  };
+
   return (
-    <div className="w-[400px] cursor-pointer relative">
-      <Image src={mockData.thumbnailUrl} alt="Thumbnail" width={400} height={225} className="rounded-lg" />
-      <p className="text-xs text-gray-400">
-        {mockData.authorName}
-      </p>
-      <p className="text-md text-black">
-        {mockData.title}
-      </p>
-      <div className="w-full flex justify-between">
+    <Link href={`/video/${video.uuid}`} className="max-h-[300px] max-w-[400px]">
+      <div
+        className={`relative cursor-pointer ${additionalStyles} overflow-hidden`}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+      >
+        {hovering ? (
+          <>
+            {loading && <div className="absolute inset-0 flex items-center justify-center">Loading...</div>}
+            <div className="absolute inset-0 bg-black bg-opacity-0"></div>
+            <iframe
+              width="400"
+              height="225"
+              src={`${video.url}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0`}
+              title={video.title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="rounded-lg"
+              onLoad={handleIframeLoad}
+            ></iframe>
+          </>
+
+        ) : (
+          <Image src={`http://img.youtube.com/vi/${youtube_video_id}/0.jpg`} alt="Thumbnail" width={400} height={225} className="w-[400px] h-[225px] object-cover rounded-lg" />
+
+        )
+        }
         <p className="text-xs text-gray-400">
-          {mockData.views} views
+          {video.users.name}
         </p>
-        <p className="text-xs text-gray-400">
-          {formatDistance(
-            new Date(mockData.publishedAt),
-            new Date(),
-            {
-              addSuffix: true,
-              // locale: cs 
-            },
-          )}
+        <p className="text-md text-black">
+          {video.title}
         </p>
+        <div className="w-full flex justify-between">
+          <p className="text-xs text-gray-400">
+            {/* {video.views ?? 0 } views */}
+            0 views
+          </p>
+          <p className="text-xs text-gray-400">
+            {formatDistance(
+              new Date(video.created),
+              new Date(),
+              {
+                addSuffix: true,
+                // locale: cs 
+              },
+            )}
+          </p>
+        </div>
+        <Image src={'https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg'} alt="Profile" width={80} height={80} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
       </div>
-      <Image src={mockData.authorPofilePictureUrl} alt="Profile" width={80} height={80} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
-    </div>
+    </Link>
   );
 };
 

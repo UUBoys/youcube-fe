@@ -18,7 +18,7 @@ type LoginValues = {
 
 export const SignIn = () => {
   const { register, handleSubmit } = useForm<LoginValues>();
-  const { mutateAsync, isLoading, isSuccess, isError } = LoginMutation();
+  const { mutateAsync, isLoading, isSuccess, isError, data } = LoginMutation();
   const [defaultError, setDefaultError] = useState("");
   const router = useRouter();
 
@@ -26,6 +26,14 @@ export const SignIn = () => {
   useEffect(() => {
     setSessionUser({});
   }, [setSessionUser]);
+
+
+  useEffect(() => {
+    if (data?.user && data?.jwt) {
+      setSessionUser(data);
+      router.push("/home");
+    }
+  }, [data]);
 
   const handleCredentialsLogin = async ({ email, password }: LoginValues) => {
     const res = await mutateAsync({ email, password });
@@ -36,11 +44,6 @@ export const SignIn = () => {
       }
       setDefaultError(res.error);
       return;
-    }
-
-    if (res.user && res.jwt) {
-      setSessionUser(res);
-      router.push("/", undefined, { shallow: false });
     }
   };
 

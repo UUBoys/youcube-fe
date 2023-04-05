@@ -8,6 +8,7 @@ import { RegisterMutation } from "../../modules/mutations/UserMutations";
 
 import { useSetUserSessionContext } from "@/modules/contexts/userContext";
 import { IRegister, signUpSchema } from "@/modules/utils/schemas/auth";
+import { useRouter } from "next/router";
 
 const SignUp: React.FC = () => {
   const {
@@ -18,13 +19,14 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema),
   });
   const [defaultError, setDefaultError] = useState<string>("");
+  const router = useRouter();
 
   const setSessionUser = useSetUserSessionContext();
 
   useEffect(() => {
     setSessionUser({});
   }, [setSessionUser]);
-  
+
   const { mutateAsync } = RegisterMutation();
   const handleSignUp = async ({
     name,
@@ -37,6 +39,8 @@ const SignUp: React.FC = () => {
     if (res.error) {
       setDefaultError(res.error);
     }
+    router.push("/auth/signin");
+
   };
 
   return (

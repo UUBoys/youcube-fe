@@ -20,7 +20,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <QueryClientProvider client={queryClient}>
       <UserSessionContextProvider>
         <NavBar />
-        <div className="flex flex-row ml-64">
+        <div className="flex flex-row md:ml-64">
           <SidePanel />
           <Component {...pageProps} />
         </div>
