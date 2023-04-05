@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "@/modules/common/styles/globals.css";
 import SidePanel from "@/modules/common/components/SidePanel";
 import NavBar from "@/modules/common/components/NavBar";
+import { UserSessionContextProvider } from "@/modules/contexts/userContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,11 +18,13 @@ const queryClient = new QueryClient({
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <NavBar />
-      <div className="flex flex-row ml-64">
-        <SidePanel />
-        <Component {...pageProps} />
-      </div>
+      <UserSessionContextProvider>
+        <NavBar />
+        <div className="flex flex-row ml-64">
+          <SidePanel />
+          <Component {...pageProps} />
+        </div>
+      </UserSessionContextProvider>
     </QueryClientProvider>
   );
 };
