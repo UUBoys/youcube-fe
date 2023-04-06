@@ -31,7 +31,7 @@ export const SignIn = () => {
   useEffect(() => {
     if (data?.user && data?.jwt) {
       setSessionUser(data);
-      router.push("/home");
+      router.push("/");
     }
   }, [data]);
 

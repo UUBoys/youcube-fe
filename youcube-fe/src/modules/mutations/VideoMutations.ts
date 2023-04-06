@@ -38,9 +38,9 @@ export const GetVideosMutation = () => {
 }
 
 export const GetVideoMutation = (uuid: string) => {
-  return useQuery<IVideo[]>({
+  return useQuery<IVideo>({
     queryFn: async () => {
-      const response = await fetch(`/api/videos/?uuid=${uuid}`, {
+      const response = await fetch(`/api/videos/${uuid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

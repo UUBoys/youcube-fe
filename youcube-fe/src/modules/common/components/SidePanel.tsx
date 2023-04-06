@@ -15,7 +15,7 @@ const tabs: Tab[] = [
     {
         name: 'Home',
         icon: 'home',
-        href: '/home',
+        href: '/',
         auth: 'both',
     },
     {

@@ -8,7 +8,7 @@ const NavBar = () => {
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 w-screen z-10 h-[4.5rem] fixed">
             <div className="flex flex-wrap items-center justify-between w-full p-4 px-12">
-                <Link href="/home" className="flex items-center">
+                <Link href="/" className="flex items-center">
                     <span className="self-center text-2xl font-semibold w text-red-600 ">YOU</span>
                     <span className="self-center text-2xl font-semibold w text-gray-900 ">CUBE</span>
                 </Link>

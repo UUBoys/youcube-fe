@@ -10,19 +10,20 @@ const Video = () => {
     ? GetVideoMutation(typeof id === 'string' ? id : id[0])
     : { data: null, isLoading: true, error: null };
 
+  console.log(video)
   if (isLoading) return (
     <div>Loading...</div>
   )
 
-  if (video && video[0]) return (
+  if (video) return (
     <div className='w-full h-full min-h-screen mt-16 bg-white'>
-      <h1>{video[0].title}</h1>
+      <h1>{video.title}</h1>
       <div className='h-screen'>
         <iframe
           width="75%"
           height="70%"
-          src={`${video[0].url}?autoplay=1`}
-          title={video[0].title}
+          src={`${video.url}?autoplay=1`}
+          title={video.title}
           frameBorder="0"
           className="rounded-lg"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
