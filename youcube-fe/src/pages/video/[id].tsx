@@ -14,8 +14,6 @@ const Video = () => {
     <div>Loading...</div>
   )
 
-  console.log(video)
-
   if (video && video[0]) return (
     <div className='w-full h-full min-h-screen mt-16 bg-white'>
       <h1>{video[0].title}</h1>

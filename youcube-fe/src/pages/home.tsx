@@ -16,10 +16,8 @@ const components: NextPage = () => {
     </div>
   )
 
-  console.log(data)
-
   if (data) return (
-    <div className="h-full w-full bg-white flex flex-row space-x-3 space-y-3 flex-wrap mt-16">
+    <div className="h-full w-full min-h-screen bg-white flex flex-row space-x-3 space-y-3 flex-wrap mt-16">
       {data.map((video, i) => (
         <Thumbnail video={video} additionalStyles={i === 0 ? "pl-3 pt-3" : undefined} />
       ))}

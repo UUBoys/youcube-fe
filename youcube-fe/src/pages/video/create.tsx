@@ -21,41 +21,30 @@ const CreateVideo = () => {
   };
 
   return (
-    <div className='mt-16 p-6'>
-      <h1>Create Video</h1>
+    <div className='pt-16 p-6 h-screen bg-white w-full flex flex-col justify-center items-center text-black'>
+      <h2 className='text-3xl mb-3'>Upload Video</h2>
       <form
+        className='w-full lg:w-1/2'
         onSubmit={(e) => {
           e.preventDefault();
           onClick();
         }}
       >
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+        <div className="mb-6 w-[50%]">
+          <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+          <input id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Video title" onChange={(e) => setTitle(e.target.value)} value={title} />
         </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
+
+        <div className="mb-6">
+          <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+          <textarea id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Video description" onChange={(e) => setDescription(e.target.value)} value={description} />
         </div>
-        <div>
-          <label htmlFor="url">Video URL</label>
-          <input
-            type="url"
-            id="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+        <div className="mb-6">
+          <label htmlFor="url" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Url</label>
+          <input id="url" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Video URL" onChange={(e) => setUrl(e.target.value)} value={url} />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Upload!</button>
+
       </form>
     </div>
   );
