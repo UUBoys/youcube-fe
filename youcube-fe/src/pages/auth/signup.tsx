@@ -8,6 +8,7 @@ import { RegisterMutation } from "../../modules/mutations/UserMutations";
 
 import { useSetUserSessionContext } from "@/modules/contexts/userContext";
 import { IRegister, signUpSchema } from "@/modules/utils/schemas/auth";
+import { useRouter } from "next/router";
 
 const SignUp: React.FC = () => {
   const {
@@ -18,13 +19,14 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema),
   });
   const [defaultError, setDefaultError] = useState<string>("");
+  const router = useRouter();
 
   const setSessionUser = useSetUserSessionContext();
 
   useEffect(() => {
     setSessionUser({});
   }, [setSessionUser]);
-  
+
   const { mutateAsync } = RegisterMutation();
   const handleSignUp = async ({
     name,
@@ -37,10 +39,12 @@ const SignUp: React.FC = () => {
     if (res.error) {
       setDefaultError(res.error);
     }
+    router.push("/auth/signin");
+
   };
 
   return (
-    <div className="flex h-full w-full items-center bg-white">
+    <div className="flex h-screen w-full items-center bg-white">
       <div className="mx-auto flex  w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
           Registrace

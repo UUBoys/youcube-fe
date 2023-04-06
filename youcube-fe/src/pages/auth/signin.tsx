@@ -18,7 +18,7 @@ type LoginValues = {
 
 export const SignIn = () => {
   const { register, handleSubmit } = useForm<LoginValues>();
-  const { mutateAsync, isLoading, isSuccess, isError } = LoginMutation();
+  const { mutateAsync, isLoading, isSuccess, isError, data } = LoginMutation();
   const [defaultError, setDefaultError] = useState("");
   const router = useRouter();
 
@@ -26,6 +26,14 @@ export const SignIn = () => {
   useEffect(() => {
     setSessionUser({});
   }, [setSessionUser]);
+
+
+  useEffect(() => {
+    if (data?.user && data?.jwt) {
+      setSessionUser(data);
+      router.push("/home");
+    }
+  }, [data]);
 
   const handleCredentialsLogin = async ({ email, password }: LoginValues) => {
     const res = await mutateAsync({ email, password });
@@ -37,15 +45,10 @@ export const SignIn = () => {
       setDefaultError(res.error);
       return;
     }
-
-    if (res.user && res.jwt) {
-      setSessionUser(res);
-      router.push("/", undefined, { shallow: false });
-    }
   };
 
   return (
-    <div className="flex h-full w-full items-center bg-white">
+    <div className="flex h-screen w-full items-center bg-white">
       <div className="mx-auto flex h-[500px] w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
           Přihlášení

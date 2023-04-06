@@ -9,6 +9,18 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: [
+      "katalog.svkul.cz",
+      "obalkyknih.cz",
+      "nazornavyuka.cz",
+      "ftp.nazornavyuka.cz",
+      "uuapp.plus4u.net",
+      "s3.amazonaws.com",
+      "img.youtube.com",
+      "this-person-does-not-exist.com",
+    ],
+  },
 };
 
 module.exports = nextConfig;
