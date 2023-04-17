@@ -43,6 +43,7 @@ const CreateVideo = () => {
         url,
         monetized: false,
         tag: 0,
+        comments: [],
       },
       token: user.jwt,
     });
