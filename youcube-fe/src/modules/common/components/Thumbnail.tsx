@@ -1,17 +1,24 @@
-import Image from "next/image";
-import React, { useState } from "react";
+/* eslint-disable camelcase */
 import { formatDistance } from "date-fns";
 import { cs } from "date-fns/locale";
-import { IVideo } from "@/modules/utils/schemas/video";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
+
+import { IVideo } from "@/modules/utils/schemas/video";
 
 interface ThumbnailProps {
-  video: IVideo
-  additionalStyles?: string
+  video: IVideo;
+  additionalStyles?: string;
 }
 
-const Thumbnail: React.FC<ThumbnailProps> = ({ video, additionalStyles }: ThumbnailProps) => {
-  const youtube_video_id = video.url.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)?.pop();
+const Thumbnail: React.FC<ThumbnailProps> = ({
+  video,
+  additionalStyles,
+}: ThumbnailProps) => {
+  const youtube_video_id = video.url
+    .match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)
+    ?.pop();
 
   const [hovering, setHovering] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -22,12 +29,12 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ video, additionalStyles }: Thumbn
       setHovering(true);
     }, 300);
     setTimeoutId(id);
-
   };
 
   const handleOnMouseLeave = () => {
     timeoutId && clearTimeout(timeoutId);
-    setHovering(false); setLoading(true);
+    setHovering(false);
+    setLoading(true);
   };
 
   const handleIframeLoad = () => {
@@ -43,8 +50,12 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ video, additionalStyles }: Thumbn
       >
         {hovering ? (
           <>
-            {loading && <div className="absolute inset-0 flex items-center justify-center">Loading...</div>}
-            <div className="absolute inset-0 bg-black bg-opacity-0"></div>
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                Loading...
+              </div>
+            )}
+            <div className="absolute inset-0 bg-black bg-opacity-0" />
             <iframe
               width="400"
               height="225"
@@ -55,37 +66,37 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ video, additionalStyles }: Thumbn
               allowFullScreen
               className="rounded-lg"
               onLoad={handleIframeLoad}
-            ></iframe>
+            />
           </>
-
         ) : (
-          <Image src={`http://img.youtube.com/vi/${youtube_video_id}/0.jpg`} alt="Thumbnail" width={400} height={225} className="w-[400px] h-[225px] object-cover rounded-lg" />
-
-        )
-        }
-        <p className="text-xs text-gray-400">
-          {video.users.name}
-        </p>
-        <p className="text-md text-black">
-          {video.title}
-        </p>
-        <div className="w-full flex justify-between">
+          <Image
+            src={`http://img.youtube.com/vi/${youtube_video_id}/0.jpg`}
+            alt="Thumbnail"
+            width={400}
+            height={225}
+            className="h-[225px] w-[400px] rounded-lg object-cover"
+          />
+        )}
+        <p className="text-xs text-gray-400">{video.users.name}</p>
+        <p className="text-md text-black">{video.title}</p>
+        <div className="flex w-full justify-between">
           <p className="text-xs text-gray-400">
-            {/* {video.views ?? 0 } views */}
-            0 views
+            {/* {video.views ?? 0 } views */}0 views
           </p>
           <p className="text-xs text-gray-400">
-            {formatDistance(
-              new Date(video.created),
-              new Date(),
-              {
-                addSuffix: true,
-                // locale: cs 
-              },
-            )}
+            {formatDistance(new Date(video.created), new Date(), {
+              addSuffix: true,
+              // locale: cs
+            })}
           </p>
         </div>
-        <Image src={'https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg'} alt="Profile" width={80} height={80} className="rounded-full absolute right-2 bottom-7 border-white border-2" />
+        <Image
+          src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
+          alt="Profile"
+          width={80}
+          height={80}
+          className="absolute right-2 bottom-7 rounded-full border-2 border-white"
+        />
       </div>
     </Link>
   );
