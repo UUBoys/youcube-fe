@@ -1,5 +1,8 @@
 /* eslint-disable import/named */
 import PersonIcon from "@mui/icons-material/Person";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import clsx from "clsx";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -69,7 +72,7 @@ export const Video = () => {
 
   const getComments = (): JSX.Element[] => {
     if (!video || !video.comments) return [];
-    return video.comments.map((comment, index) => {
+    return video.comments.map((comment) => {
       return (
         <div className="flex flex-row items-center gap-5 p-5">
           <PersonIcon height={100} width={100} />
@@ -93,11 +96,14 @@ export const Video = () => {
       ));
 
     return videos.map((videoPar, i) => {
+      if (videoPar.uuid === id) return <div />;
       return (
-        <Thumbnail
-          video={videoPar}
-          additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
-        />
+        <div className={clsx(i !== 0 && "my-10")}>
+          <Thumbnail
+            video={videoPar}
+            additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
+          />
+        </div>
       );
     });
   }, [videos]);
@@ -119,9 +125,17 @@ export const Video = () => {
             />
             <h1 className="p-3 text-4xl">{video.title}</h1>
             <hr className="w-3/4" />
-            <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
-              {getYouTubeLikeDate(new Date(video.created))}
-            </h1>
+            <div className="flex flex-row pt-5">
+              <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
+                {getYouTubeLikeDate(new Date(video.created))}
+              </h1>
+              <button className="ml-auto rounded-l-full border border-gray-400 bg-gray-300 px-10 transition-all hover:bg-gray-200">
+                <ThumbUpIcon />
+              </button>
+              <button className="rounded-r-full border border-gray-400 bg-gray-300 px-10 transition-all hover:bg-gray-200">
+                <ThumbDownAltIcon />
+              </button>
+            </div>
             <div className="flex flex-row px-5 pb-5">
               <div className="h-[51px] w-[51px] items-center rounded-full border bg-gray-100">
                 <svg

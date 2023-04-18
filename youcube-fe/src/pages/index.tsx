@@ -38,12 +38,17 @@ const Home: NextPage = () => {
       </div>
     );
 
+  const noVideoComp = () => {
+    return (
+      <div className="mt-16 flex h-[90vh] w-full flex-row flex-wrap space-x-3 space-y-3 bg-white">
+        No videos
+      </div>
+    );
+  };
+
   return (
     <div className="mt-16 flex h-[90vh] w-full flex-row flex-wrap space-x-3 space-y-3 bg-white">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates,
-      incidunt fugit consequatur obcaecati velit qui quasi similique, esse
-      tempora delectus cupiditate illo rerum tempore. Ipsam distinctio a
-      assumenda non iste.
+      {noVideoComp()}
     </div>
   );
 };

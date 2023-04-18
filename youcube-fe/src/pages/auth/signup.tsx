@@ -1,14 +1,15 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import LoadingOverlay from "react-loading-overlay";
 
 import { RegisterMutation } from "../../modules/mutations/UserMutations";
 
 import { useSetUserSessionContext } from "@/modules/contexts/userContext";
 import { IRegister, signUpSchema } from "@/modules/utils/schemas/auth";
-import { useRouter } from "next/router";
 
 const SignUp: React.FC = () => {
   const {
@@ -27,7 +28,7 @@ const SignUp: React.FC = () => {
     setSessionUser({});
   }, [setSessionUser]);
 
-  const { mutateAsync } = RegisterMutation();
+  const { mutateAsync, isLoading } = RegisterMutation();
   const handleSignUp = async ({
     name,
     email,
@@ -39,12 +40,13 @@ const SignUp: React.FC = () => {
     if (res.error) {
       setDefaultError(res.error);
     }
-    router.push("/auth/signin");
-
+    setSessionUser(res);
+    router.push("/");
   };
 
   return (
     <div className="flex h-screen w-full items-center bg-white">
+      <LoadingOverlay spinner active={isLoading} text="Načítání..." />
       <div className="mx-auto flex  w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
           Registrace
