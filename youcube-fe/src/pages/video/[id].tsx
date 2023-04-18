@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/named */
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -41,6 +42,7 @@ const SingleComment: React.FC<{
     UpdateCommentMutation();
 
   return (
+    // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       spinner
       active={isRemoveCommentLoading || isLoadingEditComment}
