@@ -42,13 +42,13 @@ const CreateVideo = () => {
         url,
         monetized: false,
         tag: 0,
-        comments: [],
       },
       token: user.jwt,
     });
   };
 
   return (
+    // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       className="h-screen w-full"
       spinner
