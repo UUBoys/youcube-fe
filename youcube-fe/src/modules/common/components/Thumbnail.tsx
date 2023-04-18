@@ -89,7 +89,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             className="h-[225px] w-[400px] rounded-lg object-cover"
           />
         )}
-        <p className="text-xs text-gray-400">{video.users.name}</p>
+        <p className="text-xs text-gray-400">{video.users?.name}</p>
         <p className="text-md text-black">{video.title}</p>
         <div className="flex w-full justify-between">
           <p className="text-xs text-gray-400">
@@ -97,7 +97,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             {video.videoView?.length === 1 ? "view" : "views"}
           </p>
           <p className="text-xs text-gray-400">
-            {formatDistance(new Date(video.created), new Date(), {
+            {formatDistance(new Date(video.created ?? ""), new Date(), {
               addSuffix: true,
               // locale: cs
             })}
