@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable camelcase */
 import { formatDistance } from "date-fns";
-import { cs } from "date-fns/locale";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
+import { useSearchStore } from "@/modules/stores/search-store";
 import { IVideo } from "@/modules/utils/schemas/video";
 
 interface ThumbnailProps {
@@ -16,6 +17,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   video,
   additionalStyles,
 }: ThumbnailProps) => {
+  const { setSearch } = useSearchStore((state) => ({
+    setSearch: state.setSearch,
+  }));
   const youtube_video_id = video.url
     .match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)
     ?.pop();
@@ -41,8 +45,16 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
     setLoading(false);
   };
 
+  console.log(video);
+
   return (
-    <Link href={`/video/${video.uuid}`} className="max-h-[300px] max-w-[400px]">
+    <Link
+      href={`/video/${video.uuid}`}
+      onClick={() => {
+        setSearch("");
+      }}
+      className="max-h-[300px] max-w-[400px]"
+    >
       <div
         className={`relative cursor-pointer ${additionalStyles} overflow-hidden`}
         onMouseEnter={handleOnMouseEnter}
@@ -81,7 +93,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         <p className="text-md text-black">{video.title}</p>
         <div className="flex w-full justify-between">
           <p className="text-xs text-gray-400">
-            {/* {video.views ?? 0 } views */}0 views
+            {video.videoView?.length ?? 0}{" "}
+            {video.videoView?.length === 1 ? "view" : "views"}
           </p>
           <p className="text-xs text-gray-400">
             {formatDistance(new Date(video.created), new Date(), {

@@ -1,21 +1,118 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/named */
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonIcon from "@mui/icons-material/Person";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
+import LoadingOverlay from "react-loading-overlay";
 
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import VideoLoading from "@/modules/common/components/VideoLoading";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import { CreateCommentMutation } from "@/modules/mutations/CommentMutation";
+import {
+  CreateCommentMutation,
+  DeleteCommentMutation,
+  UpdateCommentMutation,
+} from "@/modules/mutations/CommentMutation";
 import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
+import { IComment } from "@/modules/utils/schemas/video";
 
 interface ICommentVideoForm {
   comment: string;
 }
+
+const SingleComment: React.FC<{
+  comment: IComment;
+  refetchVideo: () => void;
+}> = ({ comment, refetchVideo }) => {
+  const user = useUserSessionContext();
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  const {
+    mutateAsync: mutateRemoveComment,
+    isLoading: isRemoveCommentLoading,
+  } = DeleteCommentMutation();
+
+  const { mutateAsync: mutateEditComment, isLoading: isLoadingEditComment } =
+    UpdateCommentMutation();
+
+  return (
+    <LoadingOverlay
+      spinner
+      active={isRemoveCommentLoading || isLoadingEditComment}
+      text="Načítání..."
+    >
+      <div
+        className={clsx(
+          "flex flex-row gap-5 p-5",
+          isEditing && "rounded-lg border-2 border-red-500"
+        )}
+      >
+        <PersonIcon height={100} className="mt-2" width={100} />
+        <div className="flex w-full flex-col">
+          <div className="flex flex-row items-center text-[10px] text-gray-400">
+            <div>{comment.users.name}</div>
+            {user?.user?.uuid === comment.users.uuid && (
+              <>
+                <button
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                  }}
+                  className="flex justify-start"
+                >
+                  <ModeEditIcon className="scale-[0.6] " />
+                </button>
+                {isEditing && (
+                  <button
+                    onClick={async () => {
+                      setIsEditing(!isEditing);
+                      await mutateRemoveComment(comment.uuid);
+                      refetchVideo();
+                    }}
+                    className="flex justify-start"
+                  >
+                    <DeleteIcon
+                      className="scale-[0.6] transition-all hover:text-red-400 "
+                      htmlColor="red"
+                    />
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+          <div className="flex w-full">
+            {isEditing ? (
+              <textarea
+                className="w-full rounded-md border-2 border-gray-300 p-2 focus:border-red-300 focus:outline-none focus:ring-0"
+                defaultValue={comment.message}
+                onBlur={async (e) => {
+                  if (e.target.value === "") {
+                    await mutateRemoveComment(comment.uuid);
+                    refetchVideo();
+                    setIsEditing(!isEditing);
+                    return;
+                  }
+                  await mutateEditComment({
+                    uuid: comment.uuid,
+                    message: e.target.value,
+                  });
+                  refetchVideo();
+                  setIsEditing(!isEditing);
+                }}
+              />
+            ) : (
+              <p>{comment.message}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </LoadingOverlay>
+  );
+};
 
 export const Video = () => {
   const router = useRouter();
@@ -25,8 +122,13 @@ export const Video = () => {
   const { id } = router.query;
 
   const { data: video, refetch: refetchVideo } = GetVideoQuery(id as string);
-
   const { data: videos } = GetVideosQuery();
+
+  useEffect(() => {
+    if (router.isReady) {
+      refetchVideo();
+    }
+  }, [id, refetchVideo, router.isReady]);
 
   const handleCommentSendSubmit = async (data: ICommentVideoForm) => {
     if (!user || !user.jwt) return;
@@ -34,7 +136,7 @@ export const Video = () => {
       message: data.comment,
       video_uuid: id as string,
     });
-    refetchVideo();
+    refetchVideo({ queryKey: [id as string] });
     reset();
   };
 
@@ -74,17 +176,11 @@ export const Video = () => {
     if (!video || !video.comments) return [];
     return video.comments.map((comment) => {
       return (
-        <div className="flex flex-row items-center gap-5 p-5">
-          <PersonIcon height={100} width={100} />
-          <div className="flex flex-col">
-            <div className="text-[10px] text-gray-400">
-              <p>{comment.users.name}</p>
-            </div>
-            <div className="flex ">
-              <p>{comment.message}</p>
-            </div>
-          </div>
-        </div>
+        <SingleComment
+          refetchVideo={refetchVideo}
+          key={comment.uuid}
+          comment={comment}
+        />
       );
     });
   };
@@ -106,8 +202,9 @@ export const Video = () => {
         </div>
       );
     });
-  }, [videos]);
+  }, [id, videos]);
 
+  if (video?.error) return <div>{video?.error}</div>;
   if (video)
     return (
       <div className="mt-16 h-full min-h-screen w-full bg-white pr-20 pl-10 text-gray-600">
@@ -124,16 +221,18 @@ export const Video = () => {
               allowFullScreen
             />
             <h1 className="p-3 text-4xl">{video.title}</h1>
+            <h2 className="p-3 text-2xl text-gray-400">
+              {video.videoView?.length}{" "}
+              {video.videoView?.length === 1 ? "view" : "views"}
+            </h2>
             <hr className="w-3/4" />
-            <div className="flex flex-row pt-5">
+            <div className="flex flex-row pt-5 pr-5">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
                 {getYouTubeLikeDate(new Date(video.created))}
               </h1>
-              <button className="ml-auto rounded-l-full border border-gray-400 bg-gray-300 px-10 transition-all hover:bg-gray-200">
-                <ThumbUpIcon />
-              </button>
-              <button className="rounded-r-full border border-gray-400 bg-gray-300 px-10 transition-all hover:bg-gray-200">
-                <ThumbDownAltIcon />
+              <button className="ml-auto rounded-full  border border-gray-400 bg-gray-300 px-10 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
+                {video._count?.liked_videos}
+                <ThumbUpIcon className="mb-2 ml-3" />
               </button>
             </div>
             <div className="flex flex-row px-5 pb-5">

@@ -2,9 +2,14 @@ import Link from "next/link";
 import React from "react";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
+import { useSearchStore } from "@/modules/stores/search-store";
 
 const NavBar = () => {
   const user = useUserSessionContext();
+  const { search, setSearch } = useSearchStore((state) => ({
+    search: state.search,
+    setSearch: state.setSearch,
+  }));
 
   return (
     <nav className="fixed z-10 h-[4.5rem] w-screen border-gray-200 bg-white dark:bg-gray-900">
@@ -25,9 +30,14 @@ const NavBar = () => {
                 type="search"
                 className="z-20 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:border-l-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-red-500"
                 placeholder="Hledat"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
                 required
               />
-              <button
+              <Link
+                href="/"
                 type="submit"
                 className="absolute top-0 right-0 rounded-r-lg border border-red-700 bg-red-700 p-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
               >
@@ -47,7 +57,7 @@ const NavBar = () => {
                   />
                 </svg>
                 <span className="sr-only">Hledat</span>
-              </button>
+              </Link>
             </div>
           </div>
         </form>

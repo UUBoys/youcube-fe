@@ -9,6 +9,7 @@ import Link from "next/link";
 import React from "react";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
+import { useSearchStore } from "@/modules/stores/search-store";
 
 type auth = "logged" | "notLogged" | "both";
 
@@ -66,6 +67,9 @@ const tabs: Tab[] = [
 ];
 
 const SidePanel: React.FC = () => {
+  const { setSearch } = useSearchStore((state) => ({
+    setSearch: state.setSearch,
+  }));
   const user = useUserSessionContext();
 
   const isUserAuthenticated = user && user.user;
@@ -87,6 +91,7 @@ const SidePanel: React.FC = () => {
             .map((tab) => (
               <li key={tab.name}>
                 <Link
+                  onClick={() => setSearch("")}
                   href={tab.href}
                   className="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >

@@ -26,6 +26,17 @@ export const videoSchema = z.object({
     uuid: z.string(),
     name: z.string(),
   }),
+  videoView: z.array(
+    z.object({
+      uuid: z.string(),
+      created: z.string(),
+    })
+  ),
+  _count: z.object({
+    liked_videos: z.number(),
+  }),
+  error: z.string().optional(),
 });
 
 export type IVideo = z.infer<typeof videoSchema>;
+export type IComment = z.infer<typeof commentSchema>;
