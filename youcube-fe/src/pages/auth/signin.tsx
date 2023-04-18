@@ -47,6 +47,7 @@ export const SignIn = () => {
   };
 
   return (
+    // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       className="h-screen w-full"
       spinner
