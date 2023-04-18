@@ -230,7 +230,7 @@ export const Video = () => {
             <hr className="w-3/4" />
             <div className="flex flex-row pt-5 pr-5">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
-                {getYouTubeLikeDate(new Date(video.created))}
+                {getYouTubeLikeDate(new Date(video.created ?? ""))}
               </h1>
               <button className="ml-auto rounded-full  border border-gray-400 bg-gray-300 px-10 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
                 {video._count?.liked_videos}
@@ -260,7 +260,7 @@ export const Video = () => {
             </p>
 
             <div className="mt-4  p-5 pt-4">
-              {video && video.comments?.length > 0 && (
+              {video && video.comments && video.comments?.length > 0 && (
                 <div className="text-xl font-semibold">
                   {video.comments.length}
                   {video.comments.length === 1 ? " Comment" : " Comments"}

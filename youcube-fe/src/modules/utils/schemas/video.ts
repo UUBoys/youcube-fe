@@ -14,27 +14,33 @@ export const commentSchema = z.object({
 });
 
 export const videoSchema = z.object({
-  uuid: z.string(),
-  comments: z.array(commentSchema),
+  uuid: z.string().optional(),
+  comments: z.array(commentSchema).optional(),
   title: z.string(),
   description: z.string(),
   url: z.string(),
-  monetized: z.boolean(),
-  created: z.string(),
-  tag: z.number(),
-  users: z.object({
-    uuid: z.string(),
-    name: z.string(),
-  }),
-  videoView: z.array(
-    z.object({
+  monetized: z.boolean().optional(),
+  created: z.string().optional(),
+  tag: z.number().optional(),
+  users: z
+    .object({
       uuid: z.string(),
-      created: z.string(),
+      name: z.string(),
     })
-  ),
-  _count: z.object({
-    liked_videos: z.number(),
-  }),
+    .optional(),
+  videoView: z
+    .array(
+      z.object({
+        uuid: z.string(),
+        created: z.string(),
+      })
+    )
+    .optional(),
+  _count: z
+    .object({
+      liked_videos: z.number(),
+    })
+    .optional(),
   error: z.string().optional(),
 });
 

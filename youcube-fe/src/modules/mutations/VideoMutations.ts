@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { IVideo } from "../utils/schemas/video";
 
 interface IVideoMutation {
-  video: Omit<IVideo, "created" | "uuid" | "users">;
+  video: IVideo;
   token: string;
 }
 export const VideoMutation = () => {
