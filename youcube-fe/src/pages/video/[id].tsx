@@ -21,6 +21,7 @@ import {
 } from "@/modules/mutations/CommentMutation";
 import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { IComment } from "@/modules/utils/schemas/video";
+import Link from "next/link";
 
 interface ICommentVideoForm {
   comment: string;
@@ -252,7 +253,7 @@ export const Video = () => {
                 </svg>
               </div>
 
-              <h1 className="p-3 text-2xl">{video.users?.name}</h1>
+              <Link className="p-3 text-2xl" href={`/profile/${video.users?.uuid}`}>{video.users?.name}</Link>
             </div>
 
             <p className="m-5 rounded-lg bg-gray-200 p-3 py-6">

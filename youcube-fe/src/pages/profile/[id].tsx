@@ -1,21 +1,26 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import Link from "next/link";
+import { useQuery } from "react-query";
 
 const Profile = () => {
-  const user = useUserSessionContext();
+  const loggedUser = useUserSessionContext();
   const router = useRouter();
   const [subscribed, setSubscribed] = React.useState(false);
+  const [user, setUser] = useState<any>({
+    uuid: router.query.id,
+    name: "John Doe",
+    email: "test@noreply.com",
 
+  })
   const handleSubcribeChange = () => {
     // TO DO:...
     setSubscribed(!subscribed);
   }
 
   useEffect(() => {
-    if (!user || !user.user) router.push("/login");
+    if (!loggedUser || !loggedUser.user) router.push("/login");
+    if (loggedUser && loggedUser?.user?.uuid === router.query.id) router.push('/profile')
   }, [router, user]);
 
   const logout = () => {
@@ -57,15 +62,17 @@ const Profile = () => {
             </div>
             <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
               {/* TO DO: Subscribe */}
-              <Link className={`py-3 px-4 uppercase rounded "text-white bg-red-500 hover:bg-red-500" border-2 border-red-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
-                href={'/profile/edit'}
-              >
-                edit profile
-              </Link>
+              <button className={` py-2 px-4 uppercase rounded ${subscribed ? "text-white bg-red-500 hover:bg-red-500" : "bg-white hover:bg-white text-red-500"} border-2 border-red-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
+                onClick={() => handleSubcribeChange()}>
+                {subscribed ? "Unsubscribe" : "Subscribe"}
+              </button>
+              <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                Report
+              </button>
             </div>
           </div>
           <div className="mt-20 text-center border-b pb-12">
-            <h1 className="text-4xl font-medium text-gray-700">{user?.user?.name}</h1>
+            <h1 className="text-4xl font-medium text-gray-700">{user?.name}</h1>
             <p className="mt-8 text-gray-500">{"{bio}"}</p>
           </div>
           <div className="mt-12 flex flex-col justify-center">

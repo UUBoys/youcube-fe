@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { VideoMutation } from "@/modules/mutations/VideoMutations";
+import { GetTagsQuery } from "@/modules/queries/TagsQuery";
 
 const CreateVideo = () => {
   const user = useUserSessionContext();
@@ -13,20 +14,10 @@ const CreateVideo = () => {
   const { mutateAsync, isError, error, isSuccess, isLoading } = VideoMutation();
 
   const [title, setTitle] = useState<string>("");
-  const [tag, setTag] = useState<number>(0); // TO DO: Tag interface
+  const [tag, setTag] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-
-
-  // TO DO: load tags from backend
-  const options = [
-    { id: 1, name: "test" },
-    { id: 2, name: "gaming" },
-    { id: 3, name: "music" },
-    { id: 4, name: "sport" },
-    { id: 5, name: "news" },
-    { id: 6, name: "other" },
-  ]
+  const { data: tags } = GetTagsQuery()
 
   useEffect(() => {
     if (isError) {
@@ -102,10 +93,10 @@ const CreateVideo = () => {
             <select
               id="title"
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500 outline-0"
-              onChange={(e) => setTag(e.target.value)}
+              onChange={(e) => setTag(parseInt(e.target.value))}
               value={tag}
             >
-              {options.map((option: any) => (
+              {tags && tags?.map((option: any) => (
                 <option key={option.id} value={option.id}>
                   {option.name}
                 </option>
