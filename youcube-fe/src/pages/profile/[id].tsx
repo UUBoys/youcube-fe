@@ -2,17 +2,15 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { useQuery } from "react-query";
+import { GetUserQuery } from "@/modules/queries/UserQuery";
+import Thumbnail from "@/modules/common/components/Thumbnail";
 
 const Profile = () => {
   const loggedUser = useUserSessionContext();
   const router = useRouter();
   const [subscribed, setSubscribed] = React.useState(false);
-  const [user, setUser] = useState<any>({
-    uuid: router.query.id,
-    name: "John Doe",
-    email: "test@noreply.com",
+  const { data, isLoading } = GetUserQuery(router.query.id);
 
-  })
   const handleSubcribeChange = () => {
     // TO DO:...
     setSubscribed(!subscribed);
@@ -21,7 +19,7 @@ const Profile = () => {
   useEffect(() => {
     if (!loggedUser || !loggedUser.user) router.push("/login");
     if (loggedUser && loggedUser?.user?.uuid === router.query.id) router.push('/profile')
-  }, [router, user]);
+  }, [router, loggedUser]);
 
   const logout = () => {
     router.push("/auth/signin");
@@ -31,6 +29,10 @@ const Profile = () => {
     router.push("/video/create");
   };
 
+  if (isLoading) {
+    return <></>
+  }
+
   return (
     <div className="flex h-screen w-full flex-col items-center mt-10 bg-white p-6 pt-16 text-black">
       <div className="w-full">
@@ -38,8 +40,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 md:grid-cols-3">
             <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
               <div>
-                {/* TO DO: Video count */}
-                <p className="font-bold text-gray-700 text-xl">22</p>
+                <p className="font-bold text-gray-700 text-xl">{data?.videos ? data?.videos.length : ""}</p>
                 <p className="text-gray-400">Videos</p>
               </div>
               <div>
@@ -72,11 +73,13 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-20 text-center border-b pb-12">
-            <h1 className="text-4xl font-medium text-gray-700">{user?.name}</h1>
+            <h1 className="text-4xl font-medium text-gray-700">{data?.name}</h1>
             <p className="mt-8 text-gray-500">{"{bio}"}</p>
           </div>
-          <div className="mt-12 flex flex-col justify-center">
-            {"{videos}"}
+          <div className="mt-12 flex flex-row space-x-4">
+            {data?.videos?.map((video) => (
+              <Thumbnail video={video} key={video.uuid} />
+            ))}
           </div>
         </div>
       </div>
