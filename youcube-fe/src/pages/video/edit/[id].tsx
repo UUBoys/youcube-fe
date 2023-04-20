@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -18,8 +20,8 @@ const CreateVideo = () => {
   const [tag, setTag] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-  const { data: tags } = GetTagsQuery()
-  const { data: video } = GetVideoQuery(router.query.id)
+  const { data: tags } = GetTagsQuery();
+  const { data: video } = GetVideoQuery(router.query.id as string);
 
   useEffect(() => {
     if (video) {
@@ -27,16 +29,16 @@ const CreateVideo = () => {
       //   alert("Nemáte právo upravovat toto video")
       //   router.push('/')
       // }
-      setTitle(video.title)
-      setTag(video.tag)
-      setDescription(video.description)
-      setUrl(video.url)
+      setTitle(video.title);
+      setTag(video.tag ?? 0);
+      setDescription(video.description);
+      setUrl(video.url);
     }
     if (video && video.error) {
-      alert(video.error)
-      router.push('/')
+      alert(video.error);
+      router.push("/");
     }
-  }, [video, user])
+  }, [video, user]);
 
   useEffect(() => {
     if (isError) {
@@ -64,7 +66,7 @@ const CreateVideo = () => {
         title,
         url,
         monetized: false,
-        tag
+        tag,
       },
       token: user.jwt,
     });
@@ -79,13 +81,13 @@ const CreateVideo = () => {
     >
       <div className="flex h-screen w-full flex-col items-center justify-center bg-white p-6 pt-16 text-black">
         <form
-          className="w-full lg:w-1/2 bg-white px-3 py-4 rounded-xl shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]"
+          className="w-full rounded-xl bg-white px-3 py-4 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)] lg:w-1/2"
           onSubmit={(e) => {
             e.preventDefault();
             onClick();
           }}
         >
-          <h2 className="mb-3 text-3xl text-center">Upload Video</h2>
+          <h2 className="mb-3 text-center text-3xl">Upload Video</h2>
           <div className="mb-6 ">
             <label
               htmlFor="title"
@@ -95,7 +97,7 @@ const CreateVideo = () => {
             </label>
             <input
               id="title"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500 outline-0"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-0 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500"
               placeholder="Video title"
               onChange={(e) => setTitle(e.target.value)}
               value={title}
@@ -111,15 +113,16 @@ const CreateVideo = () => {
             </label>
             <select
               id="title"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500 outline-0"
-              onChange={(e) => setTag(parseInt(e.target.value))}
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-0 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500"
+              onChange={(e) => setTag(parseFloat(e.target.value))}
               value={tag}
             >
-              {tags && tags?.map((option: any) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
+              {tags &&
+                tags?.map((option: any) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -132,7 +135,7 @@ const CreateVideo = () => {
             </label>
             <textarea
               id="description"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 h-36 p-2.5 text-sm text-gray-900 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-red-500 dark:focus:ring-red-500 outline-0 resize-none"
+              className="block h-36 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-0 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-red-500 dark:focus:ring-red-500"
               placeholder="Video description"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
@@ -147,16 +150,16 @@ const CreateVideo = () => {
             </label>
             <input
               id="url"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-red-500 dark:focus:ring-red-500 outline-0"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-0 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-red-500 dark:focus:ring-red-500"
               placeholder="Video URL"
               onChange={(e) => setUrl(e.target.value)}
               value={url}
             />
           </div>
-          <div className="w-full flex justify-center items-center">
+          <div className="flex w-full items-center justify-center">
             <button
               type="submit"
-              className="mr-2 mb-2 rounded-lg bg-red-700 px-5 w-40 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+              className="mr-2 mb-2 w-40 rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
             >
               Upload
             </button>
