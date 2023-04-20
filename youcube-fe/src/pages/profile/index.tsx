@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import Link from "next/link";
+import { GetUserQuery } from "@/modules/queries/UserQuery";
 
 const Profile = () => {
   const user = useUserSessionContext();
   const router = useRouter();
   const [subscribed, setSubscribed] = React.useState(false);
-
   const handleSubcribeChange = () => {
     // TO DO:...
     setSubscribed(!subscribed);
