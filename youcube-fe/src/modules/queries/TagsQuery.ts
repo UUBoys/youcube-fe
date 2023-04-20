@@ -1,9 +1,7 @@
 import { useQuery } from "react-query";
 
-import { IVideo } from "../utils/schemas/video";
-
 export const GetTagsQuery = () => {
-  return useQuery<IVideo[]>({
+  return useQuery<any[]>({
     queryKey: "tags",
     queryFn: async () => {
       const response = await fetch("/api/tags", {
