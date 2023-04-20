@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/named */
@@ -229,14 +231,24 @@ export const Video = () => {
               {video.videoView?.length === 1 ? "view" : "views"}
             </h2>
             <hr className="w-3/4" />
-            <div className="flex flex-row pt-5 pr-5">
+            <div className="flex flex-row justify-between pt-5 pr-5	">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
                 {getYouTubeLikeDate(new Date(video.created ?? ""))}
               </h1>
-              <button className="ml-auto rounded-full  border border-gray-400 bg-gray-300 px-10 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
-                {video._count?.liked_videos}
-                <ThumbUpIcon className="mb-2 ml-3" />
-              </button>
+              <div className="flex flex-row space-x-2">
+                <button className="ml-auto h-14 rounded-full  border border-gray-400 bg-gray-300 px-10 py-3 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
+                  {video._count?.liked_videos}
+                  <ThumbUpIcon className="mb-2 ml-3" />
+                </button>
+                {video?.users?.uuid === user?.user?.uuid && (
+                  <Link
+                    href={`/video/edit/${video.uuid}`}
+                    className="ml-auto h-14 justify-center rounded-full border border-red-400 bg-red-700 py-3 px-10 text-[20px] font-bold text-white transition-all hover:bg-red-900 "
+                  >
+                    Edit
+                  </Link>
+                )}
+              </div>
             </div>
             <div className="flex flex-row px-5 pb-5">
               <div className="h-[51px] w-[51px] items-center rounded-full border bg-gray-100">
