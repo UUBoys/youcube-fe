@@ -1,17 +1,17 @@
 import { NextPage } from "next";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import VideoLoading from "@/modules/common/components/VideoLoading";
+import { GetTagsQuery } from "@/modules/queries/TagsQuery";
 import { GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { useSearchStore } from "@/modules/stores/search-store";
-import { GetTagsQuery } from "@/modules/queries/TagsQuery";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   const { search } = useSearchStore((state) => ({ search: state.search }));
   const { data, isLoading, error } = GetVideosQuery();
-  const { data: tags } = GetTagsQuery()
+  const { data: tags } = GetTagsQuery();
   const filteredData = useMemo(() => {
     if (!search) return data;
     return data?.filter((video) =>
@@ -29,11 +29,18 @@ const Home: NextPage = () => {
 
   if (filteredData && filteredData.length > 0)
     return (
-      <div className={"flex flex-col"}>
-        <div className={"mt-24 full-width space-x-4 px-5"}>
-          <Link href={`/`} className={`py-3  rounded px-2 bg-black text-white`}>All</Link>
+      <div className="flex flex-col">
+        <div className="full-width mt-24 space-x-4 px-5">
+          <Link href="/" className="rounded  bg-black py-3 px-2 text-white">
+            All
+          </Link>
           {tags?.map((tag) => (
-            <Link href={`/${tag.id}`} className={"py-3 bg-gray-600  text-white rounded px-2"}>{tag.name}</Link>
+            <Link
+              href={`/${tag?.id}`}
+              className="rounded bg-gray-600  py-3 px-2 text-white"
+            >
+              {tag.name}
+            </Link>
           ))}
         </div>
         <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap space-x-3 space-y-3 bg-white">
@@ -45,7 +52,6 @@ const Home: NextPage = () => {
           ))}
         </div>
       </div>
-
     );
 
   if (error)
