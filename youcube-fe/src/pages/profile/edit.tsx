@@ -1,12 +1,13 @@
 import Link from "next/link";
 import React, { useState } from "react";
-
+import { useUserSessionContext } from "@/modules/contexts/userContext";
 const Edit = () => {
-  const [username, setUsername] = useState("");
+  const { user } = useUserSessionContext();
+  const [username, setUsername] = useState(user.name);
   const handleUsernameChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => setUsername(e.target.value);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(user.email);
   const handleEmailChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => setEmail(e.target.value);

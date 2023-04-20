@@ -5,7 +5,7 @@ import { formatDistance } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-
+import curak from "@/modules/utils/curak.jpeg";
 import { useSearchStore } from "@/modules/stores/search-store";
 import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
@@ -103,7 +103,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           </p>
         </div>
         <Image
-          src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
+          // src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
+          src={curak}
           alt="Profile"
           width={80}
           height={80}

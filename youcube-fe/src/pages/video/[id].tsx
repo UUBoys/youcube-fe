@@ -60,7 +60,7 @@ const SingleComment: React.FC<{
         <PersonIcon height={100} className="mt-2" width={100} />
         <div className="flex w-full flex-col">
           <div className="flex flex-row items-center text-[10px] text-gray-400">
-            <div>{comment.users.name}</div>
+            <Link href={`/profile/${comment.users.uuid}`}>{comment.users.name}</Link>
             {user?.user?.uuid === comment.users.uuid && (
               <>
                 <button

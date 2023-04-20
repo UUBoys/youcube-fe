@@ -75,11 +75,10 @@ const Profile = () => {
               <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
                 {/* TO DO: Subscribe */}
                 <button
-                  className={` rounded py-2 px-4 uppercase ${
-                    subscribed
+                  className={` rounded py-2 px-4 uppercase ${subscribed
                       ? "bg-red-500 text-white hover:bg-red-500"
                       : "bg-white text-red-500 hover:bg-white"
-                  } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
+                    } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
                   onClick={() => handleSubcribeChange()}
                 >
                   {subscribed ? "Unsubscribe" : "Subscribe"}
@@ -93,7 +92,6 @@ const Profile = () => {
               <h1 className="text-4xl font-medium text-gray-700">
                 {data?.name}
               </h1>
-              <p className="mt-8 text-gray-500">{"{bio}"}</p>
             </div>
             <div className="mt-12 flex flex-row space-x-4">
               {data?.videos?.map((video: IVideo) => (
