@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-export default function Playlist() {
-  return (
-    <div>Playlist</div>
-  )
-}
+const Playlist = () => {
+  return <div>Playlist</div>;
+};
+
+export default Playlist;

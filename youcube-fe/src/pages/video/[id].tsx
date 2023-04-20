@@ -6,6 +6,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonIcon from "@mui/icons-material/Person";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import clsx from "clsx";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +22,6 @@ import {
 } from "@/modules/mutations/CommentMutation";
 import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { IComment } from "@/modules/utils/schemas/video";
-import Link from "next/link";
 
 interface ICommentVideoForm {
   comment: string;
@@ -256,7 +256,12 @@ export const Video = () => {
                 </svg>
               </div>
 
-              <Link className="p-3 text-2xl" href={`/profile/${video.users?.uuid}`}>{video.users?.name}</Link>
+              <Link
+                className="p-3 text-2xl"
+                href={`/profile/${video.users?.uuid}`}
+              >
+                {video.users?.name}
+              </Link>
             </div>
 
             <p className="m-5 rounded-lg bg-gray-200 p-3 py-6">

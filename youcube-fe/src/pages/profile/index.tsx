@@ -1,76 +1,72 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import Link from "next/link";
-import { GetUserQuery } from "@/modules/queries/UserQuery";
 
 const Profile = () => {
   const user = useUserSessionContext();
   const router = useRouter();
-  const [subscribed, setSubscribed] = React.useState(false);
-  const handleSubcribeChange = () => {
-    // TO DO:...
-    setSubscribed(!subscribed);
-  }
 
   useEffect(() => {
     if (!user || !user.user) router.push("/login");
   }, [router, user]);
 
-  const logout = () => {
-    router.push("/auth/signin");
-  };
-
-  const uploadVideo = () => {
-    router.push("/video/create");
-  };
-
   return (
-    <div className="flex h-screen w-full flex-col items-center mt-10 bg-white p-6 pt-16 text-black">
+    <div className="mt-10 flex h-screen w-full flex-col items-center bg-white p-6 pt-16 text-black">
       <div className="w-full">
-        <div className="p-8 bg-white mt-24 rounded-xl shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
+        <div className="mt-24 rounded-xl bg-white p-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
+            <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
               <div>
                 {/* TO DO: Video count */}
-                <p className="font-bold text-gray-700 text-xl">22</p>
+                <p className="text-xl font-bold text-gray-700">22</p>
                 <p className="text-gray-400">Videos</p>
               </div>
               <div>
                 {/* TO DO: Like count */}
-                <p className="font-bold text-gray-700 text-xl">10</p>
+                <p className="text-xl font-bold text-gray-700">10</p>
                 <p className="text-gray-400">Likes</p>
               </div>
               <div>
                 {/* TO DO: Comments counts */}
-                <p className="font-bold text-gray-700 text-xl">89</p>
+                <p className="text-xl font-bold text-gray-700">89</p>
                 <p className="text-gray-400">Comments</p>
               </div>
             </div>
             <div className="relative">
-              <div className="w-48 h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              <div className="absolute inset-x-0 top-0 mx-auto -mt-24 flex h-48 w-48 items-center justify-center rounded-full bg-indigo-100 text-indigo-500 shadow-2xl">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-24 w-24"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
             </div>
-            <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
+            <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
               {/* TO DO: Subscribe */}
-              <Link className={`py-3 px-4 uppercase rounded "text-white bg-red-500 hover:bg-red-500" border-2 border-red-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5`}
-                href={'/profile/edit'}
+              <Link
+                className={`"text-white hover:bg-red-500" rounded border-2 border-red-500 bg-red-500 py-3 px-4 font-medium uppercase shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
+                href="/profile/edit"
               >
                 edit profile
               </Link>
             </div>
           </div>
-          <div className="mt-20 text-center border-b pb-12">
-            <h1 className="text-4xl font-medium text-gray-700">{user?.user?.name}</h1>
+          <div className="mt-20 border-b pb-12 text-center">
+            <h1 className="text-4xl font-medium text-gray-700">
+              {user?.user?.name}
+            </h1>
             <p className="mt-8 text-gray-500">{"{bio}"}</p>
           </div>
-          <div className="mt-12 flex flex-col justify-center">
-            {"{videos}"}
-          </div>
+          <div className="mt-12 flex flex-col justify-center">{"{videos}"}</div>
         </div>
       </div>
     </div>
