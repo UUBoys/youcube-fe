@@ -18,10 +18,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({
 }: LikeButtonProps) => {
   const color = !isLiked ? "text-gray-500" : "text-gray-400";
   const bgColor = isLiked ? "bg-primary-500" : "bg-gray-300";
+  const hoverBgColor = isLiked ? "hover:bg-primary-600" : "hover:bg-gray-400";
 
   return (
     <button
-      className={`ml-auto h-14 rounded-full  border ${color} ${bgColor} flex px-10 py-3 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200`}
+      className={`ml-auto h-14 rounded-full  border ${color} ${bgColor} ${hoverBgColor} flex px-10 py-3 text-[20px] font-bold text-gray-600 transition-all`}
       onClick={onClick}
     >
       {isLoading ? (

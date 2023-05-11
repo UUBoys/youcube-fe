@@ -1,3 +1,5 @@
+/* eslint-disable tailwindcss/no-custom-classname */
+/* eslint-disable tailwindcss/migration-from-tailwind-2 */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 /* eslint-disable no-underscore-dangle */
@@ -90,7 +92,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           />
         )}
         <p className="text-xs text-gray-400">{video?.users?.name}</p>
-        <p className="text-md text-black">{video?.title}</p>
+        <p className="text-md w-3/4 text-black line-clamp-2">{video?.title}</p>
         <div className="flex w-full justify-between">
           <p className="text-xs text-gray-400">
             {video?._count?.videoView ?? 0}{" "}
