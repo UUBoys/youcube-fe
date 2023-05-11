@@ -92,26 +92,21 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           </div>
         )}
         <p className="text-xs text-gray-400">{video?.users?.name}</p>
-        <p className="text-md w-3/4 text-black line-clamp-2">{video?.title}</p>
-        <div className="flex w-full justify-between">
-          <p className="text-xs text-gray-400">
-            {video?._count?.videoView ?? 0}{" "}
-            {video?._count?.videoView === 1 ? "view" : "views"}
-          </p>
-          <p className="text-xs text-gray-400">
-            {formatDistance(new Date(video?.created ?? ""), new Date(), {
-              addSuffix: true,
-              // locale: cs
-            })}
-          </p>
+        <div className="flex flex-col justify-between">
+          <p className="text-md text-black line-clamp-2">{video?.title}</p>
+          <div className="flex w-full justify-between">
+            <p className="text-xs text-gray-400">
+              {video?._count?.videoView ?? 0}{" "}
+              {video?._count?.videoView === 1 ? "view" : "views"}
+            </p>
+            <p className="text-xs text-gray-400">
+              {formatDistance(new Date(video?.created ?? ""), new Date(), {
+                addSuffix: true,
+                // locale: cs
+              })}
+            </p>
+          </div>
         </div>
-        <Image
-          src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
-          alt="Profile"
-          width={80}
-          height={80}
-          className="absolute right-2 bottom-7 rounded-full border-2 border-white"
-        />
       </div>
     </Link>
   );

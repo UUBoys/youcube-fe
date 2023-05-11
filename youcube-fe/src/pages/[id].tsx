@@ -1,3 +1,7 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable tailwindcss/no-custom-classname */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -39,32 +43,35 @@ const HomeFilter: NextPage = () => {
     );
 
   return (
-    <div className="flex flex-col">
-      <div className="full-width mt-24 space-x-4 px-5">
-        <Link href="/" className="rounded  bg-gray-600  py-3  px-2 text-white">
-          All
-        </Link>
-        {tags?.map((tag) => (
-          <Link
-            href={`/${tag.id}`}
-            className={`${
-              parseFloat(query.id as string) === tag.id
-                ? "bg-black text-white"
-                : "bg-gray-600  text-white"
-            } rounded  py-3 px-2`}
-          >
-            {tag.name}
+    <div className="flex w-full flex-col ">
+      <div className="mt-24 w-full px-5">
+        <div className="flex flex-wrap ">
+          <Link href="/" className="mb-3 rounded bg-gray-600 p-3 text-white">
+            All
           </Link>
-        ))}
+          {tags?.map((tag) => (
+            <Link
+              href={`/${tag.id}`}
+              className={`${parseFloat(query.id as string) === tag.id
+                ? "bg-black text-white"
+                : "bg-gray-600 text-white"
+                } ml-3 mb-3 rounded p-3`}
+            >
+              {tag.name}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {filteredData && filteredData.length > 0 && (
-        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
+        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start justify-center space-x-3 space-y-3 bg-white md:justify-start">
           {filteredData.map((video, i) => (
-            <Thumbnail
-              video={video}
-              additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
-            />
+            <div className="h-[305px] w-4/5 md:w-[400px]">
+              <Thumbnail
+                video={video}
+                additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
+              />
+            </div>
           ))}
         </div>
       )}

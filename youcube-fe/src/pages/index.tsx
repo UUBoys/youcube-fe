@@ -32,25 +32,27 @@ const Home: NextPage = () => {
   if (filteredData && filteredData.length > 0)
     return (
       <div className="flex flex-col">
-        <div className="mt-24 w-full space-x-4 px-5">
-          <Link href="/" className="rounded  bg-black py-3 px-2 text-white">
-            All
-          </Link>
-          {tags?.map((tag) => (
-            <Link
-              href={`/${tag?.id}`}
-              className="rounded bg-gray-600  py-3 px-2 text-white"
-            >
-              {tag.name}
+        <div className="mt-24 w-full px-5">
+          <div className="flex flex-wrap ">
+            <Link href="/" className="mb-3 rounded bg-black p-3 text-white">
+              All
             </Link>
-          ))}
+            {tags?.map((tag) => (
+              <Link
+                href={`/${tag?.id}`}
+                className="ml-3 mb-3 rounded bg-gray-600 p-3 text-white"
+              >
+                {tag.name}
+              </Link>
+            ))}
+          </div>
         </div>
-        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
+        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start justify-center space-x-3 space-y-3 bg-white md:justify-start">
           {filteredData.map((video, i) => (
-            <div className="h-[305px] w-[400px]">
+            <div className="h-[305px] w-4/5 md:w-[400px]">
               <Thumbnail
                 video={video}
-                additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
+                additionalStyles={i === 0 ? "pl-3  pt-3" : undefined}
               />
             </div>
           ))}
