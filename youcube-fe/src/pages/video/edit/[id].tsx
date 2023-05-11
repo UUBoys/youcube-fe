@@ -7,14 +7,14 @@ import LoadingOverlay from "react-loading-overlay";
 import { toast } from "react-toastify";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import { VideoMutation } from "@/modules/mutations/VideoMutations";
+import { UpdateVideoMutation } from "@/modules/mutations/VideoMutations";
 import { GetTagsQuery } from "@/modules/queries/TagsQuery";
 import { GetVideoQuery } from "@/modules/queries/VideoQuery";
 
 const CreateVideo = () => {
   const user = useUserSessionContext();
   const router = useRouter();
-  const { mutateAsync, isError, error, isSuccess, isLoading } = VideoMutation();
+  const { mutateAsync, isError, error, isSuccess, isLoading } = UpdateVideoMutation();
 
   const [title, setTitle] = useState<string>("");
   const [tag, setTag] = useState<number>(0);
@@ -61,12 +61,12 @@ const CreateVideo = () => {
     if (!user || !user.jwt) return;
     await mutateAsync({
       video: {
-        comments: [],
         description,
+        uuid: router.query.id as string,
         title,
         url,
-        monetized: false,
         tag,
+        monetized: false,
       },
       token: user.jwt,
     });
@@ -87,7 +87,7 @@ const CreateVideo = () => {
             onClick();
           }}
         >
-          <h2 className="mb-3 text-center text-3xl">Upload Video</h2>
+          <h2 className="mb-3 text-center text-3xl">Edit Video</h2>
           <div className="mb-6 ">
             <label
               htmlFor="title"
