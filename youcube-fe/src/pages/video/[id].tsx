@@ -24,6 +24,9 @@ import {
 } from "@/modules/mutations/CommentMutation";
 import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { IComment } from "@/modules/utils/schemas/video";
+import { formatDistance } from "date-fns";
+import LikeButton from "@/modules/common/components/LikeButton";
+import { LikeMutation } from "@/modules/mutations/LikeMutation";
 
 interface ICommentVideoForm {
   comment: string;
@@ -126,11 +129,15 @@ export const Video = () => {
   const { register, handleSubmit, reset } = useForm<ICommentVideoForm>();
   const { id } = router.query;
 
-  const { data: videoData, refetch: refetchVideo } = GetVideoQuery(
+  const { data: videoData, refetch: refetchVideo, isLoading: refetchLoading } = GetVideoQuery(
     id as string
   );
   const { data: videos } = GetVideosQuery();
   console.log(videoData);
+
+  const { mutateAsync: likeVideo, isLoading: isLikeVideoLoading } =
+    LikeMutation();
+
   useEffect(() => {
     if (router.isReady) {
       refetchVideo();
@@ -145,38 +152,6 @@ export const Video = () => {
     });
     refetchVideo({ queryKey: [id as string] });
     reset();
-  };
-
-  const getYouTubeLikeDate = (uploadDate: Date): string => {
-    const now = new Date();
-    const diffInMillis = now.getTime() - uploadDate.getTime();
-
-    const MINUTE = 60 * 1000;
-    const HOUR = 60 * MINUTE;
-    const DAY = 24 * HOUR;
-    const MONTH = 30 * DAY;
-    const YEAR = 365 * DAY;
-
-    if (diffInMillis < MINUTE) {
-      return "a minute ago";
-    }
-    if (diffInMillis < HOUR) {
-      const minutes = Math.floor(diffInMillis / MINUTE);
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    }
-    if (diffInMillis < DAY) {
-      const hours = Math.floor(diffInMillis / HOUR);
-      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    }
-    if (diffInMillis < MONTH) {
-      const days = Math.floor(diffInMillis / DAY);
-      return `${days} day${days > 1 ? "s" : ""} ago`;
-    }
-    if (diffInMillis < YEAR) {
-      const months = Math.floor(diffInMillis / MONTH);
-      return `${months} month${months > 1 ? "s" : ""} ago`;
-    }
-    return uploadDate.toLocaleDateString();
   };
 
   const getComments = (): JSX.Element[] => {
@@ -235,13 +210,22 @@ export const Video = () => {
             <hr className="w-3/4" />
             <div className="flex flex-row justify-between pt-5 pr-5	">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
-                {getYouTubeLikeDate(new Date(videoData?.video.created ?? ""))}
+                {formatDistance(new Date(videoData?.video.created ?? ""), new Date(), {
+                  addSuffix: true,
+                  // locale: cs
+                })}
               </h1>
               <div className="flex flex-row space-x-2">
-                <button className="ml-auto h-14 rounded-full  border border-gray-400 bg-gray-300 px-10 py-3 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
-                  {videoData?.video._count?.liked_videos}
-                  <ThumbUpIcon className="mb-2 ml-3" />
-                </button>
+                <LikeButton
+                  isLiked={videoData?.isLikedByUser ?? false}
+                  totalLikes={videoData?.video?._count?.liked_videos ?? 0}
+                  onClick={async () => {
+                    if (!user || !user.jwt) return;
+                    await likeVideo(videoData?.video?.uuid ?? '');
+                    refetchVideo();
+                  }}
+                  isLoading={isLikeVideoLoading || refetchLoading}
+                />
                 {videoData?.video?.users?.uuid === user?.user?.uuid && (
                   <Link
                     href={`/video/edit/${videoData?.video.uuid}`}
