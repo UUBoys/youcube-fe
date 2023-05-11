@@ -52,13 +52,6 @@ const tabs: Tab[] = [
     auth: "logged",
   },
   {
-    name: "Playlists",
-    icon: <SubscriptionsIcon />,
-    href: "/playlists",
-    auth: "both",
-  },
-
-  {
     name: "Logout",
     icon: <LogoutIcon />,
     href: "/auth/signin",
