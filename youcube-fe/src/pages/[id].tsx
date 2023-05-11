@@ -47,10 +47,11 @@ const HomeFilter: NextPage = () => {
         {tags?.map((tag) => (
           <Link
             href={`/${tag.id}`}
-            className={`${parseFloat(query.id as string) === tag.id
+            className={`${
+              parseFloat(query.id as string) === tag.id
                 ? "bg-black text-white"
                 : "bg-gray-600  text-white"
-              } rounded  py-3 px-2`}
+            } rounded  py-3 px-2`}
           >
             {tag.name}
           </Link>
@@ -58,7 +59,7 @@ const HomeFilter: NextPage = () => {
       </div>
 
       {filteredData && filteredData.length > 0 && (
-        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap space-x-3 space-y-3 bg-white content-start">
+        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
           {filteredData.map((video, i) => (
             <Thumbnail
               video={video}

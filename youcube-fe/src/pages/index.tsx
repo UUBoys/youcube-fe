@@ -45,7 +45,7 @@ const Home: NextPage = () => {
             </Link>
           ))}
         </div>
-        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap space-x-3 space-y-3 bg-white content-start">
+        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
           {filteredData.map((video, i) => (
             <Thumbnail
               video={video}

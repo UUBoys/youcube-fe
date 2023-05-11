@@ -6,7 +6,7 @@ import { useUserSessionContext } from "../contexts/userContext";
 interface ICreateCommentMutation {
   message: string;
   video_uuid: string;
-  parrent_uuid?: string;
+  parent_uuid?: string;
 }
 
 interface IUpdateCommentMutation {

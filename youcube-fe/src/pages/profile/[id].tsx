@@ -11,13 +11,7 @@ import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 const Profile = () => {
   const loggedUser = useUserSessionContext();
   const router = useRouter();
-  const [subscribed, setSubscribed] = React.useState(false);
   const { data, isLoading } = GetUserQuery(router.query.id as string);
-
-  const handleSubcribeChange = () => {
-    // TO DO:...
-    setSubscribed(!subscribed);
-  };
 
   useEffect(() => {
     if (!loggedUser || !loggedUser.user) router.push("/login");
@@ -69,15 +63,6 @@ const Profile = () => {
               </div>
               <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
                 {/* TO DO: Subscribe */}
-                <button
-                  className={` rounded py-2 px-4 uppercase ${subscribed
-                      ? "bg-red-500 text-white hover:bg-red-500"
-                      : "bg-white text-red-500 hover:bg-white"
-                    } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
-                  onClick={() => handleSubcribeChange()}
-                >
-                  {subscribed ? "Unsubscribe" : "Subscribe"}
-                </button>
                 <button className="rounded bg-gray-700 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg">
                   Report
                 </button>

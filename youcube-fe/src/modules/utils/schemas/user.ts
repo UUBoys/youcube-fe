@@ -8,6 +8,7 @@ export const userSchema = z.object({
   name: z.string(),
   videos: z.array(singleVideoSchema).optional(),
   liked_videos: z.array(singleVideoSchema).optional(),
+  videoView: z.array(singleVideoSchema).optional(),
 });
 
 export const userSessionSchema = z

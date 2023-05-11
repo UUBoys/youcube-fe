@@ -138,7 +138,7 @@ const CreateVideo = () => {
           <div className="flex w-full items-center justify-center">
             <button
               type="submit"
-              className="rounded border-2 border-red-500 hover:bg-red-500 py-2 px-4 font-medium uppercase hover:text-white text-red-500 shadow transition hover:-translate-y-0.5 hover:shadow-lg text-center"
+              className="rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"
             >
               Upload
             </button>

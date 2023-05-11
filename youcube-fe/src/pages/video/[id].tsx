@@ -140,7 +140,7 @@ const SingleComment: React.FC<{
                 onChange={handleNewMessageChange}
                 value={newMessage}
                 onBlur={async () => {
-                  if (newMessage === "") return
+                  if (newMessage === "") return;
                   await mutateCreateComment({
                     message: newMessage,
                     video_uuid: router.query.id as string,

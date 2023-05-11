@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable import/order */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
@@ -43,8 +44,10 @@ const Profile = () => {
               </div>
               <div>
                 {/* TO DO: Like count */}
-                <p className="text-xl font-bold text-gray-700">10</p>
-                <p className="text-gray-400">Likes</p>
+                <p className="text-xl font-bold text-gray-700">
+                  {fetchedUser?.liked_videos?.length}
+                </p>
+                <p className="text-gray-400">Videos liked</p>
               </div>
             </div>
             <div className="relative">
@@ -63,7 +66,7 @@ const Profile = () => {
                 </svg>
               </div>
             </div>
-            <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
+            <div className="mt-32 flex justify-between space-x-8 text-center md:mt-0 md:justify-center">
               {/* TO DO: Subscribe */}
               <Link
                 className={`"text-white hover:bg-red-500" rounded border-2 border-red-500 bg-red-500 py-3 px-4 font-medium uppercase shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
@@ -71,6 +74,13 @@ const Profile = () => {
               >
                 edit profile
               </Link>
+              <div>
+                {/* TO DO: Like count */}
+                <p className="text-xl font-bold text-gray-700">
+                  {fetchedUser?.videoView?.length}
+                </p>
+                <p className="text-gray-400">Videos viewed</p>
+              </div>
             </div>
           </div>
           <div className="mt-20 border-b pb-12 text-center">
@@ -90,8 +100,7 @@ const Profile = () => {
               fetchedUser?.videos?.map((video: ISingleVIdeo) => (
                 <div className="flex flex-col space-y-2">
                   <Thumbnail key={video.uuid} video={video} />
-                  <div className={"grid grid-cols-2 gap-4 my-2"}>
-
+                  <div className="my-2 grid grid-cols-2 gap-4">
                     <button
                       className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-white hover:text-red-500 hover:shadow-lg"
                       onClick={async () => {
@@ -101,7 +110,10 @@ const Profile = () => {
                     >
                       delete
                     </button>
-                    <Link href={`/video/edit/${video?.uuid}`} className={"rounded border-2 border-red-500 hover:bg-red-500 py-2 px-4 font-medium uppercase hover:text-white text-red-500 shadow transition hover:-translate-y-0.5 hover:shadow-lg text-center"}>
+                    <Link
+                      href={`/video/edit/${video?.uuid}`}
+                      className="rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"
+                    >
                       edit
                     </Link>
                   </div>

@@ -1,6 +1,10 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { useMutation } from "react-query";
+
+import { useUserSessionContext } from "../contexts/userContext";
+import { IUser } from "../utils/schemas/user";
 
 import { ILogin, IRegister } from "@/modules/utils/schemas/auth";
 
@@ -32,6 +36,25 @@ export const LoginMutation = () => {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
+      });
+
+      return response.json();
+    },
+  });
+};
+
+export const EditProfileMutation = () => {
+  const user = useUserSessionContext();
+  return useMutation({
+    mutationFn: async (data: IUser) => {
+      const response = await fetch("/api/users/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${user?.jwt}`,
         },
         body: JSON.stringify(data),
       });
