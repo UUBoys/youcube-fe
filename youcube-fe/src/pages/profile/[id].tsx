@@ -70,11 +70,10 @@ const Profile = () => {
               <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
                 {/* TO DO: Subscribe */}
                 <button
-                  className={` rounded py-2 px-4 uppercase ${
-                    subscribed
+                  className={` rounded py-2 px-4 uppercase ${subscribed
                       ? "bg-red-500 text-white hover:bg-red-500"
                       : "bg-white text-red-500 hover:bg-white"
-                  } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
+                    } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
                   onClick={() => handleSubcribeChange()}
                 >
                   {subscribed ? "Unsubscribe" : "Subscribe"}

@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/classnames-order */
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/migration-from-tailwind-2 */
 /* eslint-disable import/no-unresolved */

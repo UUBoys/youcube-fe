@@ -1,3 +1,7 @@
+/* eslint-disable import/order */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
+/* eslint-disable tailwindcss/no-custom-classname */
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -6,13 +10,19 @@ import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { GetUserQuery } from "@/modules/queries/UserQuery";
 import { ISingleVIdeo } from "@/modules/utils/schemas/video";
+import { DeleteVideoMutation } from "@/modules/mutations/VideoMutations";
+import VideoLoading from "@/modules/common/components/VideoLoading";
 
 const Profile = () => {
   const user = useUserSessionContext();
   const router = useRouter();
 
-  const { data: fetchedUser } = GetUserQuery(user?.user?.uuid);
-  console.log("fetched_user", fetchedUser);
+  const { data: fetchedUser, refetch: refetchUser } = GetUserQuery(
+    user?.user?.uuid
+  );
+
+  const { mutateAsync: deleteVideo, isLoading: isVideoDeleteing } =
+    DeleteVideoMutation();
 
   useEffect(() => {
     if (!user || !user.user) router.push("/login");
@@ -27,7 +37,7 @@ const Profile = () => {
               <div>
                 {/* TO DO: Video count */}
                 <p className="text-xl font-bold text-gray-700">
-                  {fetchedUser && fetchedUser?.videos.length}
+                  {fetchedUser && fetchedUser?.videos?.length}
                 </p>
                 <p className="text-gray-400">Videos</p>
               </div>
@@ -69,10 +79,29 @@ const Profile = () => {
             </h1>
           </div>
           <div className="mt-12 flex flex-row space-x-4">
-            {fetchedUser &&
-              fetchedUser?.videos.map((video: ISingleVIdeo) => (
-                <Thumbnail key={video.uuid} video={video} />
-              ))}
+            {isVideoDeleteing ? (
+              <>
+                <VideoLoading />
+                <VideoLoading />
+                <VideoLoading />
+              </>
+            ) : (
+              fetchedUser &&
+              fetchedUser?.videos?.map((video: ISingleVIdeo) => (
+                <div className="flex flex-col space-y-2">
+                  <Thumbnail key={video.uuid} video={video} />
+                  <button
+                    className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-lg"
+                    onClick={async () => {
+                      await deleteVideo(video?.uuid ?? "");
+                      refetchUser();
+                    }}
+                  >
+                    delete
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/extensions */
 import { NextPage } from "next";
 import Link from "next/link";
 import { useMemo } from "react";
