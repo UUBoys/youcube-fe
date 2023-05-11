@@ -45,7 +45,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const handleIframeLoad = () => {
     setLoading(false);
   };
-  console.log(video);
   return (
     <Link
       href={`/video/${video?.uuid}`}
@@ -103,8 +102,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
           </p>
         </div>
         <Image
-          // src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
-          src={curak}
+          src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
           alt="Profile"
           width={80}
           height={80}
