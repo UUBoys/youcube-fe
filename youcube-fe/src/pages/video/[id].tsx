@@ -59,6 +59,7 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
     isLoading: isLoadingCreateComment,
   } = CreateCommentMutation();
 
+
   return (
     // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
@@ -113,26 +114,14 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
               <textarea
                 className="w-full rounded-md border-2 border-gray-300 p-2 focus:border-red-300 focus:outline-none focus:ring-0"
                 defaultValue={comment.message}
-                onBlur={async (e) => {
-                  if (e.target.value === "") {
-                    await mutateRemoveComment(comment.uuid);
-                    e.target.value = "";
-                    refetchVideo();
-                    setIsEditing(!isEditing);
-                    return;
-                  }
-                  await mutateEditComment({
-                    uuid: comment.uuid,
-                    message: e.target.value,
-                  });
-                  refetchVideo();
-                  setIsEditing(!isEditing);
-                }}
               />
             ) : (
               <p>{comment.message}</p>
             )}
           </div>
+
+
+
           <div className="mt-3 pl-5">
             {comment.parent_uuid === null && !isEditing && (
               <textarea
@@ -151,6 +140,18 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
                 }}
               />
             )}
+          </div>
+          <div className={`${newMessage.length > 0 ? "flex" : "hidden"} justify-end`}>
+            <button className={"rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"} onClick={async (e) => {
+              await mutateEditComment({
+                uuid: comment.uuid,
+                message: newMessage,
+              });
+              refetchVideo();
+              setIsEditing(!isEditing);
+            }}>
+              SENT
+            </button>
           </div>
           <div>
             {children?.map((singleComment) => (
