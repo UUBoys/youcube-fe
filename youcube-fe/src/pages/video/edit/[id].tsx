@@ -21,24 +21,24 @@ const CreateVideo = () => {
   const [description, setDescription] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const { data: tags } = GetTagsQuery();
-  const { data: video } = GetVideoQuery(router.query.id as string);
+  const { data: videoData } = GetVideoQuery(router.query.id as string);
 
   useEffect(() => {
-    if (video) {
+    if (videoData) {
       // if (video?.users?.uuid !== user?.uuid) {
       //   alert("Nemáte právo upravovat toto video")
       //   router.push('/')
       // }
-      setTitle(video.title);
-      setTag(video.tag ?? 0);
-      setDescription(video.description);
-      setUrl(video.url);
+      setTitle(videoData?.video?.title ?? "");
+      setTag(videoData?.video?.tag ?? 0);
+      setDescription(videoData?.video?.description ?? "");
+      setUrl(videoData.video?.url ?? "");
     }
-    if (video && video.error) {
-      alert(video.error);
+    if (videoData && videoData?.video?.error) {
+      alert(videoData?.video?.error);
       router.push("/");
     }
-  }, [video, user]);
+  }, [videoData, user, router]);
 
   useEffect(() => {
     if (isError) {
@@ -163,8 +163,10 @@ const CreateVideo = () => {
             >
               Save
             </button>
-            <button type="submit"
-              className="mr-2 mb-2 rounded-lg bg-white px-5 w-40 py-2.5 text-sm font-medium text-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-black dark:hover:bg-black dark:focus:ring-red-900">
+            <button
+              type="submit"
+              className="mr-2 mb-2 w-40 rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-black dark:hover:bg-black dark:focus:ring-red-900"
+            >
               Delete
             </button>
           </div>

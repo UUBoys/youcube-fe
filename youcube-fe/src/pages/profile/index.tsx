@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
+import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { GetUserQuery } from "@/modules/queries/UserQuery";
-import Thumbnail from "@/modules/common/components/Thumbnail";
 
 const Profile = () => {
   const user = useUserSessionContext();
@@ -25,7 +25,9 @@ const Profile = () => {
             <div className="order-last mt-20 grid grid-cols-2 text-center md:order-first md:mt-0">
               <div>
                 {/* TO DO: Video count */}
-                <p className="text-xl font-bold text-gray-700">{fetched_user && fetched_user?.videos.length}</p>
+                <p className="text-xl font-bold text-gray-700">
+                  {fetched_user && fetched_user?.videos.length}
+                </p>
                 <p className="text-gray-400">Videos</p>
               </div>
               <div>
@@ -65,9 +67,11 @@ const Profile = () => {
               {user?.user?.name}
             </h1>
           </div>
-          <div className="mt-12 flex flex-row space-x-4">{fetched_user && fetched_user?.videos.map((video) => (
-            <Thumbnail key={video.uuid} video={video} />
-          ))}
+          <div className="mt-12 flex flex-row space-x-4">
+            {fetched_user &&
+              fetched_user?.videos.map((video) => (
+                <Thumbnail key={video.uuid} video={video} />
+              ))}
           </div>
         </div>
       </div>

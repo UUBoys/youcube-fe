@@ -14,3 +14,4 @@ export const userSessionSchema = z
   .optional();
 
 export type IUserSession = z.infer<typeof userSessionSchema>;
+export type IUser = z.infer<typeof userSchema>;

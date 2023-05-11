@@ -1,9 +1,9 @@
 import { useMutation } from "react-query";
 
-import { IVideo } from "../utils/schemas/video";
+import { ISingleVIdeo } from "../utils/schemas/video";
 
 interface IVideoMutation {
-  video: IVideo;
+  video: ISingleVIdeo;
   token: string;
 }
 export const VideoMutation = () => {

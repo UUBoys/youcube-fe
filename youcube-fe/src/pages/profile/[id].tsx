@@ -6,7 +6,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { GetUserQuery } from "@/modules/queries/UserQuery";
-import { IVideo } from "@/modules/utils/schemas/video";
+import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
 const Profile = () => {
   const loggedUser = useUserSessionContext();
@@ -50,7 +50,6 @@ const Profile = () => {
                   <p className="text-xl font-bold text-gray-700">10</p>
                   <p className="text-gray-400">Likes</p>
                 </div>
-
               </div>
               <div className="relative">
                 <div className="absolute inset-x-0 top-0 mx-auto -mt-24 flex h-48 w-48 items-center justify-center rounded-full bg-indigo-100 text-indigo-500 shadow-2xl">
@@ -71,10 +70,11 @@ const Profile = () => {
               <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center">
                 {/* TO DO: Subscribe */}
                 <button
-                  className={` rounded py-2 px-4 uppercase ${subscribed
-                    ? "bg-red-500 text-white hover:bg-red-500"
-                    : "bg-white text-red-500 hover:bg-white"
-                    } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
+                  className={` rounded py-2 px-4 uppercase ${
+                    subscribed
+                      ? "bg-red-500 text-white hover:bg-red-500"
+                      : "bg-white text-red-500 hover:bg-white"
+                  } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
                   onClick={() => handleSubcribeChange()}
                 >
                   {subscribed ? "Unsubscribe" : "Subscribe"}
@@ -90,8 +90,8 @@ const Profile = () => {
               </h1>
             </div>
             <div className="mt-12 flex flex-row space-x-4">
-              {data?.videos?.map((video: IVideo) => (
-                <Thumbnail video={video} key={video.uuid} />
+              {data?.videos?.map((video: ISingleVIdeo) => (
+                <Thumbnail video={video} key={video?.uuid} />
               ))}
             </div>
           </div>

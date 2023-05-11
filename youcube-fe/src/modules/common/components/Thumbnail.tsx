@@ -5,7 +5,7 @@ import { formatDistance } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import curak from "@/modules/utils/curak.jpeg";
+
 import { useSearchStore } from "@/modules/stores/search-store";
 import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
