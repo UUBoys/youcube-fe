@@ -59,7 +59,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       className="max-h-[300px] max-w-[400px]"
     >
       <div
-        className={`relative cursor-pointer ${additionalStyles} overflow-hidden`}
+        className={`relative cursor-pointer ${additionalStyles} h-full w-full overflow-hidden`}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
@@ -72,25 +72,24 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             )}
             <div className="absolute inset-0 bg-black bg-opacity-0" />
             <iframe
-              width="400"
-              height="225"
               src={`${video?.url}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0`}
               title={video?.title}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="rounded-lg"
+              className="h-[calc(100%-80px)] w-full rounded-lg"
               onLoad={handleIframeLoad}
             />
           </>
         ) : (
-          <Image
-            src={`http://img.youtube.com/vi/${youtube_video_id}/0.jpg`}
-            alt="Thumbnail"
-            width={400}
-            height={225}
-            className="h-[225px] w-[400px] rounded-lg object-cover"
-          />
+          <div className="relative h-[calc(100%-80px)] w-full">
+            <Image
+              src={`http://img.youtube.com/vi/${youtube_video_id}/0.jpg`}
+              alt="Thumbnail"
+              fill
+              className="rounded-lg object-cover"
+            />
+          </div>
         )}
         <p className="text-xs text-gray-400">{video?.users?.name}</p>
         <p className="text-md w-3/4 text-black line-clamp-2">{video?.title}</p>

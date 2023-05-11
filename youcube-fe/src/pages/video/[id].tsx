@@ -178,7 +178,6 @@ export const Video = () => {
     isLoading: refetchLoading,
   } = GetVideoQuery(id as string);
   const { data: videos } = GetVideosQuery();
-  console.log(videoData);
 
   const { mutateAsync: likeVideo, isLoading: isLikeVideoLoading } =
     LikeMutation();
@@ -226,6 +225,7 @@ export const Video = () => {
           <Thumbnail
             video={videoPar}
             additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
+            height={500}
           />
         </div>
       );
@@ -344,7 +344,7 @@ export const Video = () => {
               {getComments()}
             </div>
           </div>
-          <div className="h-full w-1/5 flex-col p-5">
+          <div className="w-[340px] flex-col p-5">
             <h1>Recomended</h1>
             {getVideos}
           </div>

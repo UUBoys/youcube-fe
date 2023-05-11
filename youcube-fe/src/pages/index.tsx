@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   if (filteredData && filteredData.length > 0)
     return (
       <div className="flex flex-col">
-        <div className="full-width mt-24 space-x-4 px-5">
+        <div className="mt-24 w-full space-x-4 px-5">
           <Link href="/" className="rounded  bg-black py-3 px-2 text-white">
             All
           </Link>
@@ -47,10 +47,12 @@ const Home: NextPage = () => {
         </div>
         <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap space-x-3 space-y-3 bg-white">
           {filteredData.map((video, i) => (
-            <Thumbnail
-              video={video}
-              additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
-            />
+            <div className="h-[305px] w-[400px]">
+              <Thumbnail
+                video={video}
+                additionalStyles={i === 0 ? "pl-3 pt-3" : undefined}
+              />
+            </div>
           ))}
         </div>
       </div>
