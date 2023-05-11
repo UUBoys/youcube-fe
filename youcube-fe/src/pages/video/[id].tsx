@@ -6,14 +6,15 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonIcon from "@mui/icons-material/Person";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import clsx from "clsx";
+import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import LoadingOverlay from "react-loading-overlay";
 
+import LikeButton from "@/modules/common/components/LikeButton";
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import VideoLoading from "@/modules/common/components/VideoLoading";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
@@ -22,11 +23,9 @@ import {
   DeleteCommentMutation,
   UpdateCommentMutation,
 } from "@/modules/mutations/CommentMutation";
+import { LikeMutation } from "@/modules/mutations/LikeMutation";
 import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { IComment } from "@/modules/utils/schemas/video";
-import { formatDistance } from "date-fns";
-import LikeButton from "@/modules/common/components/LikeButton";
-import { LikeMutation } from "@/modules/mutations/LikeMutation";
 
 interface ICommentVideoForm {
   comment: string;
@@ -34,10 +33,17 @@ interface ICommentVideoForm {
 
 const SingleComment: React.FC<{
   comment: IComment;
+  allComments?: IComment[];
   refetchVideo: () => void;
-}> = ({ comment, refetchVideo }) => {
+}> = ({ comment, refetchVideo, allComments }) => {
+  console.log("comment", comment);
+  const router = useRouter();
   const user = useUserSessionContext();
   const [isEditing, setIsEditing] = React.useState(false);
+  const [newMessage, setNewMessage] = React.useState<string>("");
+  const handleNewMessageChange = (e: any) => setNewMessage(e.target.value);
+
+  const children = allComments?.filter((c) => c.parent_uuid === comment.uuid);
 
   const {
     mutateAsync: mutateRemoveComment,
@@ -47,11 +53,18 @@ const SingleComment: React.FC<{
   const { mutateAsync: mutateEditComment, isLoading: isLoadingEditComment } =
     UpdateCommentMutation();
 
+  const {
+    mutateAsync: mutateCreateComment,
+    isLoading: isLoadingCreateComment,
+  } = CreateCommentMutation();
+
   return (
     // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       spinner
-      active={isRemoveCommentLoading || isLoadingEditComment}
+      active={
+        isRemoveCommentLoading || isLoadingEditComment || isLoadingCreateComment
+      }
       text="Načítání..."
     >
       <div
@@ -63,7 +76,9 @@ const SingleComment: React.FC<{
         <PersonIcon height={100} className="mt-2" width={100} />
         <div className="flex w-full flex-col">
           <div className="flex flex-row items-center text-[10px] text-gray-400">
-            <div>{comment.users.name}</div>
+            <Link href={`/profile/${comment.users.uuid}`}>
+              {comment.users.name}
+            </Link>
             {user?.user?.uuid === comment.users.uuid && (
               <>
                 <button
@@ -116,6 +131,34 @@ const SingleComment: React.FC<{
               <p>{comment.message}</p>
             )}
           </div>
+          <div className="mt-3 pl-5">
+            {comment.parent_uuid === null && !isEditing && (
+              <textarea
+                className="w-full resize-none rounded-md border-2 border-transparent p-2 focus:border-red-300 focus:outline-none focus:ring-0"
+                defaultValue=""
+                placeholder="New comment"
+                onChange={handleNewMessageChange}
+                onBlur={async () => {
+                  await mutateCreateComment({
+                    message: newMessage,
+                    video_uuid: router.query.id as string,
+                    parrent_uuid: comment.uuid,
+                  });
+                }}
+              />
+            )}
+          </div>
+          <div>
+            {children?.map((singleComment) => (
+              <div className="pl-5">
+                <SingleComment
+                  comment={singleComment}
+                  refetchVideo={refetchVideo}
+                  allComments={allComments}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </LoadingOverlay>
@@ -129,9 +172,11 @@ export const Video = () => {
   const { register, handleSubmit, reset } = useForm<ICommentVideoForm>();
   const { id } = router.query;
 
-  const { data: videoData, refetch: refetchVideo, isLoading: refetchLoading } = GetVideoQuery(
-    id as string
-  );
+  const {
+    data: videoData,
+    refetch: refetchVideo,
+    isLoading: refetchLoading,
+  } = GetVideoQuery(id as string);
   const { data: videos } = GetVideosQuery();
   console.log(videoData);
 
@@ -162,6 +207,7 @@ export const Video = () => {
           refetchVideo={refetchVideo}
           key={comment.uuid}
           comment={comment}
+          allComments={videoData?.video?.comments}
         />
       );
     });
@@ -175,7 +221,6 @@ export const Video = () => {
 
     return videos.map((videoPar, i) => {
       if (videoPar?.uuid === id) return <div />;
-      console.log(videos);
       return (
         <div className={clsx(i !== 0 && "my-10")}>
           <Thumbnail
@@ -186,6 +231,7 @@ export const Video = () => {
       );
     });
   }, [id, videos]);
+
   if (videoData?.video?.error) return <div>{videoData?.video?.error}</div>;
   if (videoData?.video)
     return (
@@ -210,10 +256,14 @@ export const Video = () => {
             <hr className="w-3/4" />
             <div className="flex flex-row justify-between pt-5 pr-5	">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
-                {formatDistance(new Date(videoData?.video.created ?? ""), new Date(), {
-                  addSuffix: true,
-                  // locale: cs
-                })}
+                {formatDistance(
+                  new Date(videoData?.video.created ?? ""),
+                  new Date(),
+                  {
+                    addSuffix: true,
+                    // locale: cs
+                  }
+                )}
               </h1>
               <div className="flex flex-row space-x-2">
                 <LikeButton
@@ -221,7 +271,7 @@ export const Video = () => {
                   totalLikes={videoData?.video?._count?.liked_videos ?? 0}
                   onClick={async () => {
                     if (!user || !user.jwt) return;
-                    await likeVideo(videoData?.video?.uuid ?? '');
+                    await likeVideo(videoData?.video?.uuid ?? "");
                     refetchVideo();
                   }}
                   isLoading={isLikeVideoLoading || refetchLoading}

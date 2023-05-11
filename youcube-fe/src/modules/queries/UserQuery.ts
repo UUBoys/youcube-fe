@@ -1,7 +1,9 @@
 import { useQuery } from "react-query";
 
+import { IUser } from "../utils/schemas/user";
+
 export const GetUserQuery = (uuid?: string) => {
-  return useQuery({
+  return useQuery<IUser>({
     queryKey: "users",
     queryFn: async () => {
       if (!uuid) return null;

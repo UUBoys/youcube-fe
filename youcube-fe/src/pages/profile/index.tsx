@@ -2,11 +2,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
+import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
+import { GetUserQuery } from "@/modules/queries/UserQuery";
+import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
 const Profile = () => {
   const user = useUserSessionContext();
   const router = useRouter();
+
+  const { data: fetchedUser } = GetUserQuery(user?.user?.uuid);
+  console.log("fetched_user", fetchedUser);
 
   useEffect(() => {
     if (!user || !user.user) router.push("/login");
@@ -17,21 +23,18 @@ const Profile = () => {
       <div className="w-full">
         <div className="mt-24 rounded-xl bg-white p-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+            <div className="order-last mt-20 grid grid-cols-2 text-center md:order-first md:mt-0">
               <div>
                 {/* TO DO: Video count */}
-                <p className="text-xl font-bold text-gray-700">22</p>
+                <p className="text-xl font-bold text-gray-700">
+                  {fetchedUser && fetchedUser?.videos.length}
+                </p>
                 <p className="text-gray-400">Videos</p>
               </div>
               <div>
                 {/* TO DO: Like count */}
                 <p className="text-xl font-bold text-gray-700">10</p>
                 <p className="text-gray-400">Likes</p>
-              </div>
-              <div>
-                {/* TO DO: Comments counts */}
-                <p className="text-xl font-bold text-gray-700">89</p>
-                <p className="text-gray-400">Comments</p>
               </div>
             </div>
             <div className="relative">
@@ -64,9 +67,13 @@ const Profile = () => {
             <h1 className="text-4xl font-medium text-gray-700">
               {user?.user?.name}
             </h1>
-            <p className="mt-8 text-gray-500">{"{bio}"}</p>
           </div>
-          <div className="mt-12 flex flex-col justify-center">{"{videos}"}</div>
+          <div className="mt-12 flex flex-row space-x-4">
+            {fetchedUser &&
+              fetchedUser?.videos.map((video: ISingleVIdeo) => (
+                <Thumbnail key={video.uuid} video={video} />
+              ))}
+          </div>
         </div>
       </div>
     </div>

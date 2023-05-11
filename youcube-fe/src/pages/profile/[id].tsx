@@ -6,7 +6,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { GetUserQuery } from "@/modules/queries/UserQuery";
-import { IVideo } from "@/modules/utils/schemas/video";
+import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
 const Profile = () => {
   const loggedUser = useUserSessionContext();
@@ -38,7 +38,7 @@ const Profile = () => {
         <div className="w-full">
           <div className="mt-24 rounded-xl bg-white p-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
             <div className="grid grid-cols-1 md:grid-cols-3">
-              <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+              <div className="order-last mt-20 grid grid-cols-2 text-center md:order-first md:mt-0">
                 <div>
                   <p className="text-xl font-bold text-gray-700">
                     {data?.videos ? data?.videos.length : ""}
@@ -49,11 +49,6 @@ const Profile = () => {
                   {/* TO DO: Like count */}
                   <p className="text-xl font-bold text-gray-700">10</p>
                   <p className="text-gray-400">Likes</p>
-                </div>
-                <div>
-                  {/* TO DO: Comments counts */}
-                  <p className="text-xl font-bold text-gray-700">89</p>
-                  <p className="text-gray-400">Comments</p>
                 </div>
               </div>
               <div className="relative">
@@ -93,11 +88,10 @@ const Profile = () => {
               <h1 className="text-4xl font-medium text-gray-700">
                 {data?.name}
               </h1>
-              <p className="mt-8 text-gray-500">{"{bio}"}</p>
             </div>
             <div className="mt-12 flex flex-row space-x-4">
-              {data?.videos?.map((video: IVideo) => (
-                <Thumbnail video={video} key={video.uuid} />
+              {data?.videos?.map((video: ISingleVIdeo) => (
+                <Thumbnail video={video} key={video?.uuid} />
               ))}
             </div>
           </div>

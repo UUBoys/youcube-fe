@@ -1,15 +1,26 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
+import { useUserSessionContext } from "@/modules/contexts/userContext";
+
 const Edit = () => {
-  const [username, setUsername] = useState("");
+  const { user } = useUserSessionContext();
+  const [username, setUsername] = useState(user.name);
   const handleUsernameChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => setUsername(e.target.value);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(user.email);
   const handleEmailChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => setEmail(e.target.value);
+
+  const handleProfileChange = () => {
+    const payload = {
+      name: username,
+      email,
+    };
+    console.log(payload);
+  };
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center bg-white p-6 pt-16 text-black">
@@ -17,6 +28,7 @@ const Edit = () => {
         className="w-full rounded-xl bg-white px-3 py-4 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)] lg:w-1/2"
         onSubmit={(e) => {
           e.preventDefault();
+          handleProfileChange();
         }}
       >
         <h2 className="mb-3 text-center text-3xl">Edit profile</h2>

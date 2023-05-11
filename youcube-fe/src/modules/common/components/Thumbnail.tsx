@@ -45,7 +45,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const handleIframeLoad = () => {
     setLoading(false);
   };
-  console.log(video);
   return (
     <Link
       href={`/video/${video?.uuid}`}

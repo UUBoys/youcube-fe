@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const commentSchema = z.object({
   uuid: z.string(),
-  parrent_uuid: z.string().optional(),
+  parent_uuid: z.string().optional(),
   video_uuid: z.string(),
   user_uuid: z.string(),
   message: z.string(),
