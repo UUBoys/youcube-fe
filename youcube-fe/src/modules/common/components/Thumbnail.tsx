@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable camelcase */
 import { formatDistance } from "date-fns";
@@ -6,10 +7,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import { useSearchStore } from "@/modules/stores/search-store";
-import { IVideo } from "@/modules/utils/schemas/video";
+import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
 interface ThumbnailProps {
-  video: IVideo;
+  video: ISingleVIdeo;
   additionalStyles?: string;
 }
 
@@ -20,7 +21,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const { setSearch } = useSearchStore((state) => ({
     setSearch: state.setSearch,
   }));
-  const youtube_video_id = video.url
+  const youtube_video_id = video?.url
     .match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/)
     ?.pop();
 
@@ -44,12 +45,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const handleIframeLoad = () => {
     setLoading(false);
   };
-
   console.log(video);
-
   return (
     <Link
-      href={`/video/${video.uuid}`}
+      href={`/video/${video?.uuid}`}
       onClick={() => {
         setSearch("");
       }}
@@ -71,8 +70,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             <iframe
               width="400"
               height="225"
-              src={`${video.url}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0`}
-              title={video.title}
+              src={`${video?.url}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0`}
+              title={video?.title}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -89,15 +88,15 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             className="h-[225px] w-[400px] rounded-lg object-cover"
           />
         )}
-        <p className="text-xs text-gray-400">{video.users?.name}</p>
-        <p className="text-md text-black">{video.title}</p>
+        <p className="text-xs text-gray-400">{video?.users?.name}</p>
+        <p className="text-md text-black">{video?.title}</p>
         <div className="flex w-full justify-between">
           <p className="text-xs text-gray-400">
-            {video.videoView?.length ?? 0}{" "}
-            {video.videoView?.length === 1 ? "view" : "views"}
+            {video?._count?.videoView ?? 0}{" "}
+            {video?._count?.videoView === 1 ? "view" : "views"}
           </p>
           <p className="text-xs text-gray-400">
-            {formatDistance(new Date(video.created ?? ""), new Date(), {
+            {formatDistance(new Date(video?.created ?? ""), new Date(), {
               addSuffix: true,
               // locale: cs
             })}

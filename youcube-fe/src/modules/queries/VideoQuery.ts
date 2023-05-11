@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
 
 import { useUserSessionContext } from "../contexts/userContext";
-import { IVideo } from "../utils/schemas/video";
+import { ISingleVIdeo, IVideo } from "../utils/schemas/video";
 
 export const GetVideosQuery = () => {
-  return useQuery<IVideo[]>({
+  return useQuery<ISingleVIdeo[]>({
     queryKey: "videos",
     queryFn: async () => {
       const response = await fetch("/api/videos", {

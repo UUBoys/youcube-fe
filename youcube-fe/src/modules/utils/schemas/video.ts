@@ -13,7 +13,7 @@ export const commentSchema = z.object({
   }),
 });
 
-export const videoSchema = z.object({
+export const singleVideoSchema = z.object({
   uuid: z.string().optional(),
   comments: z.array(commentSchema).optional(),
   title: z.string(),
@@ -28,21 +28,20 @@ export const videoSchema = z.object({
       name: z.string(),
     })
     .optional(),
-  videoView: z
-    .array(
-      z.object({
-        uuid: z.string(),
-        created: z.string(),
-      })
-    )
-    .optional(),
   _count: z
     .object({
       liked_videos: z.number(),
+      videoView: z.number().optional(),
     })
     .optional(),
   error: z.string().optional(),
 });
 
+export const videoSchema = z.object({
+  isLikedByUser: z.boolean().optional(),
+  video: singleVideoSchema.optional(),
+});
+
 export type IVideo = z.infer<typeof videoSchema>;
 export type IComment = z.infer<typeof commentSchema>;
+export type ISingleVIdeo = z.infer<typeof singleVideoSchema>;

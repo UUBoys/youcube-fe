@@ -19,12 +19,12 @@ const HomeFilter: NextPage = () => {
   const filteredData = useMemo(() => {
     if (!search)
       return data?.filter(
-        (video) => video.tag === parseFloat(query.id as string)
+        (video) => video?.tag === parseFloat(query.id as string)
       );
     return data?.filter((video) => {
       return (
-        video.title.toLowerCase().includes(search.toLowerCase()) &&
-        video.tag === parseFloat(query.id as string)
+        video?.title.toLowerCase().includes(search.toLowerCase()) &&
+        video?.tag === parseFloat(query.id as string)
       );
     });
   }, [data, search, query]);

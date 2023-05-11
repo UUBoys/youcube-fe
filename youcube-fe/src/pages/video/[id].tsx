@@ -126,9 +126,11 @@ export const Video = () => {
   const { register, handleSubmit, reset } = useForm<ICommentVideoForm>();
   const { id } = router.query;
 
-  const { data: video, refetch: refetchVideo } = GetVideoQuery(id as string);
+  const { data: videoData, refetch: refetchVideo } = GetVideoQuery(
+    id as string
+  );
   const { data: videos } = GetVideosQuery();
-
+  console.log(videoData);
   useEffect(() => {
     if (router.isReady) {
       refetchVideo();
@@ -178,8 +180,8 @@ export const Video = () => {
   };
 
   const getComments = (): JSX.Element[] => {
-    if (!video || !video.comments) return [];
-    return video.comments.map((comment) => {
+    if (!videoData?.video || !videoData?.video.comments) return [];
+    return videoData?.video?.comments.map((comment) => {
       return (
         <SingleComment
           refetchVideo={refetchVideo}
@@ -197,7 +199,8 @@ export const Video = () => {
       ));
 
     return videos.map((videoPar, i) => {
-      if (videoPar.uuid === id) return <div />;
+      if (videoPar?.uuid === id) return <div />;
+      console.log(videos);
       return (
         <div className={clsx(i !== 0 && "my-10")}>
           <Thumbnail
@@ -208,9 +211,8 @@ export const Video = () => {
       );
     });
   }, [id, videos]);
-
-  if (video?.error) return <div>{video?.error}</div>;
-  if (video)
+  if (videoData?.video?.error) return <div>{videoData?.video?.error}</div>;
+  if (videoData?.video)
     return (
       <div className="mt-16 h-full min-h-screen w-full bg-white pr-20 pl-10 text-gray-600">
         <div className="flex h-screen w-full flex-row">
@@ -218,31 +220,31 @@ export const Video = () => {
             <iframe
               width="100%"
               height="70%"
-              src={`${video.url}?autoplay=1`}
-              title={video.title}
+              src={`${videoData?.video.url}?autoplay=1`}
+              title={videoData?.video.title}
               frameBorder="0"
               className="rounded-lg"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-            <h1 className="p-3 text-4xl">{video.title}</h1>
+            <h1 className="p-3 text-4xl">{videoData?.video.title}</h1>
             <h2 className="p-3 text-2xl text-gray-400">
-              {video.videoView?.length}{" "}
-              {video.videoView?.length === 1 ? "view" : "views"}
+              {videoData?.video?._count?.videoView}{" "}
+              {videoData?.video?._count?.videoView === 1 ? "view" : "views"}
             </h2>
             <hr className="w-3/4" />
             <div className="flex flex-row justify-between pt-5 pr-5	">
               <h1 className="ml-3 p-3 text-lg font-semibold text-gray-400">
-                {getYouTubeLikeDate(new Date(video.created ?? ""))}
+                {getYouTubeLikeDate(new Date(videoData?.video.created ?? ""))}
               </h1>
               <div className="flex flex-row space-x-2">
                 <button className="ml-auto h-14 rounded-full  border border-gray-400 bg-gray-300 px-10 py-3 text-[20px] font-bold text-gray-600 transition-all hover:bg-gray-200">
-                  {video._count?.liked_videos}
+                  {videoData?.video._count?.liked_videos}
                   <ThumbUpIcon className="mb-2 ml-3" />
                 </button>
-                {video?.users?.uuid === user?.user?.uuid && (
+                {videoData?.video?.users?.uuid === user?.user?.uuid && (
                   <Link
-                    href={`/video/edit/${video.uuid}`}
+                    href={`/video/edit/${videoData?.video.uuid}`}
                     className="ml-auto h-14 justify-center rounded-full border border-red-400 bg-red-700 py-3 px-10 text-[20px] font-bold text-white transition-all hover:bg-red-900 "
                   >
                     Edit
@@ -267,23 +269,27 @@ export const Video = () => {
 
               <Link
                 className="p-3 text-2xl"
-                href={`/profile/${video.users?.uuid}`}
+                href={`/profile/${videoData?.video.users?.uuid}`}
               >
-                {video.users?.name}
+                {videoData?.video.users?.name}
               </Link>
             </div>
 
             <p className="m-5 rounded-lg bg-gray-200 p-3 py-6">
-              {video.description}
+              {videoData?.video.description}
             </p>
 
             <div className="mt-4  p-5 pt-4">
-              {video && video.comments && video.comments?.length > 0 && (
-                <div className="text-xl font-semibold">
-                  {video.comments.length}
-                  {video.comments.length === 1 ? " Comment" : " Comments"}
-                </div>
-              )}
+              {videoData?.video &&
+                videoData?.video.comments &&
+                videoData?.video.comments?.length > 0 && (
+                  <div className="text-xl font-semibold">
+                    {videoData?.video.comments.length}
+                    {videoData?.video.comments.length === 1
+                      ? " Comment"
+                      : " Comments"}
+                  </div>
+                )}
               {user && user.jwt && (
                 <form onSubmit={handleSubmit(handleCommentSendSubmit)}>
                   <textarea
