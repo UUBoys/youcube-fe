@@ -192,10 +192,11 @@ export const Video = () => {
     }
   }, [id, refetchVideo, router.isReady]);
 
-  const handleCommentSendSubmit = async (data: ICommentVideoForm) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleCommentSendSubmit = async (data: any) => {
     if (!user || !user.jwt) return;
     await mutateAsyncCreateComment({
-      message: data.comment.message,
+      message: data.comment,
       video_uuid: id as string,
     });
     refetchVideo({ queryKey: [id as string] });
