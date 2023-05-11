@@ -138,11 +138,13 @@ const SingleComment: React.FC<{
                 defaultValue=""
                 placeholder="New comment"
                 onChange={handleNewMessageChange}
+                value={newMessage}
                 onBlur={async () => {
+                  if (newMessage === "") return
                   await mutateCreateComment({
                     message: newMessage,
                     video_uuid: router.query.id as string,
-                    parrent_uuid: comment.uuid,
+                    parent_uuid: comment.uuid,
                   });
                 }}
               />
