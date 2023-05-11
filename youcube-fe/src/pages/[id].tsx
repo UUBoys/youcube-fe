@@ -59,7 +59,7 @@ const HomeFilter: NextPage = () => {
       </div>
 
       {filteredData && filteredData.length > 0 && (
-        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap space-x-3 space-y-3 bg-white">
+        <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
           {filteredData.map((video, i) => (
             <Thumbnail
               video={video}
