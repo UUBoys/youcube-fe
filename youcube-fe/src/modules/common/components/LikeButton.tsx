@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable tailwindcss/no-custom-classname */
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import React from "react";
 
@@ -23,7 +25,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
       onClick={onClick}
     >
       {isLoading ? (
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary-500" />
+        <div className="border-primary-500 h-6 w-6 animate-spin rounded-full border-2" />
       ) : (
         <span className="mr-2">{totalLikes}</span>
       )}
