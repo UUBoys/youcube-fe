@@ -22,7 +22,7 @@ const Profile = () => {
       <div className="w-full">
         <div className="mt-24 rounded-xl bg-white p-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+            <div className="order-last mt-20 grid grid-cols-2 text-center md:order-first md:mt-0">
               <div>
                 {/* TO DO: Video count */}
                 <p className="text-xl font-bold text-gray-700">{fetched_user && fetched_user?.videos.length}</p>
@@ -32,11 +32,6 @@ const Profile = () => {
                 {/* TO DO: Like count */}
                 <p className="text-xl font-bold text-gray-700">10</p>
                 <p className="text-gray-400">Likes</p>
-              </div>
-              <div>
-                {/* TO DO: Comments counts */}
-                <p className="text-xl font-bold text-gray-700">89</p>
-                <p className="text-gray-400">Comments</p>
               </div>
             </div>
             <div className="relative">
