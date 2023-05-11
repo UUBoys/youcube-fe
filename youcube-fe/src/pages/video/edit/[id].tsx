@@ -81,7 +81,7 @@ const CreateVideo = () => {
     >
       <div className="flex h-screen w-full flex-col items-center justify-center bg-white p-6 pt-16 text-black">
         <form
-          className="w-full rounded-xl bg-white px-3 py-4 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)] lg:w-1/2"
+          className="w-full rounded-md bg-white px-5 py-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)] lg:w-1/2"
           onSubmit={(e) => {
             e.preventDefault();
             onClick();
@@ -156,16 +156,16 @@ const CreateVideo = () => {
               value={url}
             />
           </div>
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center gap-4">
             <button
               type="submit"
-              className="mr-2 mb-2 w-40 rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+              className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-white hover:text-red-500 hover:shadow-lg"
             >
               Save
             </button>
             <button
               type="submit"
-              className="mr-2 mb-2 w-40 rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-black dark:hover:bg-black dark:focus:ring-red-900"
+              className="rounded border-2 border-red-500 hover:bg-red-500 py-2 px-4 font-medium uppercase hover:text-white text-red-500 shadow transition hover:-translate-y-0.5 hover:shadow-lg text-center"
             >
               Delete
             </button>

@@ -90,15 +90,21 @@ const Profile = () => {
               fetchedUser?.videos?.map((video: ISingleVIdeo) => (
                 <div className="flex flex-col space-y-2">
                   <Thumbnail key={video.uuid} video={video} />
-                  <button
-                    className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:shadow-lg"
-                    onClick={async () => {
-                      await deleteVideo(video?.uuid ?? "");
-                      refetchUser();
-                    }}
-                  >
-                    delete
-                  </button>
+                  <div className={"grid grid-cols-2 gap-4 my-2"}>
+
+                    <button
+                      className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-white hover:text-red-500 hover:shadow-lg"
+                      onClick={async () => {
+                        await deleteVideo(video?.uuid ?? "");
+                        refetchUser();
+                      }}
+                    >
+                      delete
+                    </button>
+                    <Link href={`/video/edit/${video?.uuid}`} className={"rounded border-2 border-red-500 hover:bg-red-500 py-2 px-4 font-medium uppercase hover:text-white text-red-500 shadow transition hover:-translate-y-0.5 hover:shadow-lg text-center"}>
+                      edit
+                    </Link>
+                  </div>
                 </div>
               ))
             )}
