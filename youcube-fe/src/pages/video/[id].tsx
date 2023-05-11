@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import LoadingOverlay from "react-loading-overlay";
 
@@ -28,15 +28,16 @@ import { GetVideoQuery, GetVideosQuery } from "@/modules/queries/VideoQuery";
 import { IComment } from "@/modules/utils/schemas/video";
 
 interface ICommentVideoForm {
-  comment: string;
-}
-
-const SingleComment: React.FC<{
   comment: IComment;
   allComments?: IComment[];
   refetchVideo: () => void;
-}> = ({ comment, refetchVideo, allComments }) => {
-  console.log("comment", comment);
+}
+
+const SingleComment: React.FC<ICommentVideoForm> = ({
+  comment,
+  refetchVideo,
+  allComments,
+}) => {
   const router = useRouter();
   const user = useUserSessionContext();
   const [isEditing, setIsEditing] = React.useState(false);
@@ -115,6 +116,7 @@ const SingleComment: React.FC<{
                 onBlur={async (e) => {
                   if (e.target.value === "") {
                     await mutateRemoveComment(comment.uuid);
+                    e.target.value = "";
                     refetchVideo();
                     setIsEditing(!isEditing);
                     return;
@@ -180,7 +182,6 @@ export const Video = () => {
     isLoading: refetchLoading,
   } = GetVideoQuery(id as string);
   const { data: videos } = GetVideosQuery();
-  console.log(videoData);
 
   const { mutateAsync: likeVideo, isLoading: isLikeVideoLoading } =
     LikeMutation();
@@ -194,26 +195,28 @@ export const Video = () => {
   const handleCommentSendSubmit = async (data: ICommentVideoForm) => {
     if (!user || !user.jwt) return;
     await mutateAsyncCreateComment({
-      message: data.comment,
+      message: data.comment.message,
       video_uuid: id as string,
     });
     refetchVideo({ queryKey: [id as string] });
     reset();
   };
 
-  const getComments = (): JSX.Element[] => {
+  const getComments = useCallback((): JSX.Element[] => {
     if (!videoData?.video || !videoData?.video.comments) return [];
     return videoData?.video?.comments.map((comment) => {
       return (
         <SingleComment
-          refetchVideo={refetchVideo}
+          refetchVideo={() => {
+            refetchVideo({ queryKey: [id as string] });
+          }}
           key={comment.uuid}
           comment={comment}
           allComments={videoData?.video?.comments}
         />
       );
     });
-  };
+  }, [id, refetchVideo, videoData?.video]);
 
   const getVideos = useMemo((): JSX.Element[] => {
     if (!videos || !Array.isArray(videos))
