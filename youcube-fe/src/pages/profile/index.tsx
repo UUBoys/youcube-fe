@@ -5,13 +5,14 @@ import React, { useEffect } from "react";
 import Thumbnail from "@/modules/common/components/Thumbnail";
 import { useUserSessionContext } from "@/modules/contexts/userContext";
 import { GetUserQuery } from "@/modules/queries/UserQuery";
+import { ISingleVIdeo } from "@/modules/utils/schemas/video";
 
 const Profile = () => {
   const user = useUserSessionContext();
   const router = useRouter();
 
-  const { data: fetched_user } = GetUserQuery(user?.user?.uuid);
-  console.log("fetched_user", fetched_user);
+  const { data: fetchedUser } = GetUserQuery(user?.user?.uuid);
+  console.log("fetched_user", fetchedUser);
 
   useEffect(() => {
     if (!user || !user.user) router.push("/login");
@@ -26,7 +27,7 @@ const Profile = () => {
               <div>
                 {/* TO DO: Video count */}
                 <p className="text-xl font-bold text-gray-700">
-                  {fetched_user && fetched_user?.videos.length}
+                  {fetchedUser && fetchedUser?.videos.length}
                 </p>
                 <p className="text-gray-400">Videos</p>
               </div>
@@ -68,8 +69,8 @@ const Profile = () => {
             </h1>
           </div>
           <div className="mt-12 flex flex-row space-x-4">
-            {fetched_user &&
-              fetched_user?.videos.map((video) => (
+            {fetchedUser &&
+              fetchedUser?.videos.map((video: ISingleVIdeo) => (
                 <Thumbnail key={video.uuid} video={video} />
               ))}
           </div>

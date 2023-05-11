@@ -1,9 +1,10 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
-export const GetLikeQuery = (video_uuid: string) => {
+export const GetLikeQuery = (videoUuid: string) => {
   return useQuery<any[]>({
     queryKey: "tags",
     queryFn: async () => {
+      console.log(videoUuid);
       const response = await fetch("/api/tags", {
         method: "GET",
         headers: {

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
+
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import { useRouter } from "next/router";
+
 const Edit = () => {
-  const router = useRouter();
   const { user } = useUserSessionContext();
   const [username, setUsername] = useState(user.name);
   const handleUsernameChange = (e: {
@@ -17,10 +17,10 @@ const Edit = () => {
   const handleProfileChange = () => {
     const payload = {
       name: username,
-      email: email,
-    }
-
-  }
+      email,
+    };
+    console.log(payload);
+  };
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center bg-white p-6 pt-16 text-black">
@@ -28,7 +28,7 @@ const Edit = () => {
         className="w-full rounded-xl bg-white px-3 py-4 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)] lg:w-1/2"
         onSubmit={(e) => {
           e.preventDefault();
-          handleProfileChange()
+          handleProfileChange();
         }}
       >
         <h2 className="mb-3 text-center text-3xl">Edit profile</h2>

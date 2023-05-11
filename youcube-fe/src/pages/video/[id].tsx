@@ -6,7 +6,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonIcon from "@mui/icons-material/Person";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import clsx from "clsx";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
@@ -63,7 +62,9 @@ const SingleComment: React.FC<{
     // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       spinner
-      active={isRemoveCommentLoading || isLoadingEditComment || isLoadingCreateComment}
+      active={
+        isRemoveCommentLoading || isLoadingEditComment || isLoadingCreateComment
+      }
       text="Načítání..."
     >
       <div

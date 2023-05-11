@@ -4,7 +4,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import Link from "next/link";
 import React from "react";
 
