@@ -38,7 +38,7 @@ const Profile = () => {
         <div className="w-full">
           <div className="mt-24 rounded-xl bg-white p-8 shadow-[0px_7px_29px_0px_rgba(0,0,0,0.1)]">
             <div className="grid grid-cols-1 md:grid-cols-3">
-              <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+              <div className="order-last mt-20 grid grid-cols-2 text-center md:order-first md:mt-0">
                 <div>
                   <p className="text-xl font-bold text-gray-700">
                     {data?.videos ? data?.videos.length : ""}
@@ -50,11 +50,7 @@ const Profile = () => {
                   <p className="text-xl font-bold text-gray-700">10</p>
                   <p className="text-gray-400">Likes</p>
                 </div>
-                <div>
-                  {/* TO DO: Comments counts */}
-                  <p className="text-xl font-bold text-gray-700">89</p>
-                  <p className="text-gray-400">Comments</p>
-                </div>
+
               </div>
               <div className="relative">
                 <div className="absolute inset-x-0 top-0 mx-auto -mt-24 flex h-48 w-48 items-center justify-center rounded-full bg-indigo-100 text-indigo-500 shadow-2xl">
@@ -76,8 +72,8 @@ const Profile = () => {
                 {/* TO DO: Subscribe */}
                 <button
                   className={` rounded py-2 px-4 uppercase ${subscribed
-                      ? "bg-red-500 text-white hover:bg-red-500"
-                      : "bg-white text-red-500 hover:bg-white"
+                    ? "bg-red-500 text-white hover:bg-red-500"
+                    : "bg-white text-red-500 hover:bg-white"
                     } border-2 border-red-500 font-medium shadow transition hover:-translate-y-0.5 hover:shadow-lg`}
                   onClick={() => handleSubcribeChange()}
                 >
