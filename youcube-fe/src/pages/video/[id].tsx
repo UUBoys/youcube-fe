@@ -31,10 +31,17 @@ interface ICommentVideoForm {
 
 const SingleComment: React.FC<{
   comment: IComment;
+  allComments?: IComment[];
   refetchVideo: () => void;
-}> = ({ comment, refetchVideo }) => {
+}> = ({ comment, refetchVideo, allComments }) => {
+  console.log("comment", comment);
+  const router = useRouter()
   const user = useUserSessionContext();
   const [isEditing, setIsEditing] = React.useState(false);
+  const [newMessage, setNewMessage] = React.useState<string>("");
+  const handleNewMessageChange = (e: any) => setNewMessage(e.target.value);
+
+  const children = allComments?.filter((c) => c.parent_uuid === comment.uuid);
 
   const {
     mutateAsync: mutateRemoveComment,
@@ -43,6 +50,8 @@ const SingleComment: React.FC<{
 
   const { mutateAsync: mutateEditComment, isLoading: isLoadingEditComment } =
     UpdateCommentMutation();
+
+  const { mutateAsync: mutateCreateComment, isLoading: isLoadingCreateComment } = CreateCommentMutation();
 
   return (
     // @ts-ignore broken definition of LoadingOverlay
@@ -113,6 +122,30 @@ const SingleComment: React.FC<{
               <p>{comment.message}</p>
             )}
           </div>
+          <div className={"mt-3 pl-5"}>
+            {comment.parent_uuid === null && !isEditing && (
+              <textarea
+                className="w-full rounded-md border-2 p-2 border-transparent focus:border-red-300 focus:outline-none focus:ring-0 resize-none"
+                defaultValue={""}
+                placeholder={"New comment"}
+                onChange={handleNewMessageChange}
+                onBlur={async () => {
+                  await mutateCreateComment({
+                    message: newMessage,
+                    video_uuid: router.query.id as string,
+                    parent_uuid: comment.uuid,
+                  })
+                }}
+              />
+            )}
+          </div>
+          <div>
+            {children?.map((comment) => (
+              <div className={"pl-5"}>
+                <SingleComment comment={comment} refetchVideo={refetchVideo} allComments={allComments} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </LoadingOverlay>
@@ -130,7 +163,6 @@ export const Video = () => {
     id as string
   );
   const { data: videos } = GetVideosQuery();
-  console.log(videoData);
   useEffect(() => {
     if (router.isReady) {
       refetchVideo();
@@ -187,6 +219,7 @@ export const Video = () => {
           refetchVideo={refetchVideo}
           key={comment.uuid}
           comment={comment}
+          allComments={videoData?.video?.comments}
         />
       );
     });
@@ -200,7 +233,6 @@ export const Video = () => {
 
     return videos.map((videoPar, i) => {
       if (videoPar?.uuid === id) return <div />;
-      console.log(videos);
       return (
         <div className={clsx(i !== 0 && "my-10")}>
           <Thumbnail
@@ -211,6 +243,7 @@ export const Video = () => {
       );
     });
   }, [id, videos]);
+
   if (videoData?.video?.error) return <div>{videoData?.video?.error}</div>;
   if (videoData?.video)
     return (
