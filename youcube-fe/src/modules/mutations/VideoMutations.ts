@@ -40,3 +40,22 @@ export const DeleteVideoMutation = () => {
     },
   });
 };
+
+export const UpdateVideoMutation = () => {
+  const user = useUserSessionContext();
+  return useMutation({
+    mutationFn: async (video: IVideoMutation) => {
+      console.log(video);
+      const response = await fetch(`/api/videos/${video.video.uuid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${user?.jwt}`,
+        },
+        body: JSON.stringify(video.video),
+      });
+      return response.json();
+    },
+  });
+};
