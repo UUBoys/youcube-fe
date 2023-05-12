@@ -42,7 +42,10 @@ const HomeFilter: NextPage = () => {
     <div className="flex flex-col">
       <div className="mt-24 w-full px-5">
         <div className="flex flex-wrap ">
-          <Link href="/" className="mb-3 rounded bg-gray-600 p-3 text-white">
+          <Link
+            href="/"
+            className="mb-3 min-w-[100px] rounded-full bg-gray-300 p-3 text-center text-black transition-all"
+          >
             All
           </Link>
           {tags?.map((tag) => (
@@ -50,9 +53,9 @@ const HomeFilter: NextPage = () => {
               href={`/${tag.id}`}
               className={`${
                 parseFloat(query.id as string) === tag.id
-                  ? "bg-black text-white"
-                  : "bg-gray-600 text-white"
-              } ml-3 mb-3 rounded p-3`}
+                  ? "bg-gray-400 text-black transition-all"
+                  : "bg-gray-300 text-black transition-all"
+              } ml-3 mb-3  min-w-[100px] rounded-full p-3 text-center`}
             >
               {tag.name}
             </Link>

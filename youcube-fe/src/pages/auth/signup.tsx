@@ -49,7 +49,7 @@ const SignUp: React.FC = () => {
       <LoadingOverlay spinner active={isLoading} text="Načítání..." />
       <div className="mx-auto flex  w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
         <div className="w-full text-center text-3xl font-bold text-black">
-          Registrace
+          Register
         </div>
         {defaultError !== "" && (
           <p className="mt-2 text-xl italic text-red-500">{defaultError}</p>

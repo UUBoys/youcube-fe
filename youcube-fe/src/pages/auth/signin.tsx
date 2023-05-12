@@ -59,7 +59,7 @@ export const SignIn = () => {
         {" "}
         <div className="mx-auto flex h-[500px] w-11/12  flex-col gap-20 rounded-md border-[.3px] p-10 shadow-2xl sm:w-[400px] sm:gap-32">
           <div className="w-full text-center text-3xl font-bold text-black">
-            Přihlášení
+            Login
           </div>
           <div className="w-full ">
             {defaultError !== "" && (
