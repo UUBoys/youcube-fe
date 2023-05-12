@@ -40,22 +40,23 @@ const HomeFilter: NextPage = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="full-width mt-24 space-x-4 px-5">
-        <Link href="/" className="rounded  bg-gray-600  py-3  px-2 text-white">
-          All
-        </Link>
-        {tags?.map((tag) => (
-          <Link
-            href={`/${tag.id}`}
-            className={`${
-              parseFloat(query.id as string) === tag.id
-                ? "bg-black text-white"
-                : "bg-gray-600  text-white"
-            } rounded  py-3 px-2`}
-          >
-            {tag.name}
+      <div className="mt-24 w-full px-5">
+        <div className="flex flex-wrap ">
+          <Link href="/" className="mb-3 rounded bg-gray-600 p-3 text-white">
+            All
           </Link>
-        ))}
+          {tags?.map((tag) => (
+            <Link
+              href={`/${tag.id}`}
+              className={`${parseFloat(query.id as string) === tag.id
+                ? "bg-black text-white"
+                : "bg-gray-600 text-white"
+                } ml-3 mb-3 rounded p-3`}
+            >
+              {tag.name}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {filteredData && filteredData.length > 0 && (

@@ -32,18 +32,20 @@ const Home: NextPage = () => {
   if (filteredData && filteredData.length > 0)
     return (
       <div className="flex flex-col">
-        <div className="full-width mt-24 space-x-4 px-5">
-          <Link href="/" className="rounded  bg-black py-3 px-2 text-white">
-            All
-          </Link>
-          {tags?.map((tag) => (
-            <Link
-              href={`/${tag?.id}`}
-              className="rounded bg-gray-600  py-3 px-2 text-white"
-            >
-              {tag.name}
+        <div className="mt-24 w-full px-5">
+          <div className="flex flex-wrap ">
+            <Link href="/" className="mb-3 rounded bg-black p-3 text-white">
+              All
             </Link>
-          ))}
+            {tags?.map((tag) => (
+              <Link
+                href={`/${tag?.id}`}
+                className="ml-3 mb-3 rounded bg-gray-600 p-3 text-white"
+              >
+                {tag.name}
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="mt-16 flex h-full min-h-screen w-full flex-row flex-wrap content-start space-x-3 space-y-3 bg-white">
           {filteredData.map((video, i) => (

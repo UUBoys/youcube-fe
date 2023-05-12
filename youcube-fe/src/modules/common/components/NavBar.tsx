@@ -14,7 +14,7 @@ const NavBar = () => {
   return (
     <nav className="fixed z-10 h-[4.5rem] w-screen border-gray-200 bg-white dark:bg-gray-900">
       <div className="flex w-full flex-wrap items-center justify-between p-4 px-12">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="items-center hidden md:flex">
           <span className="w self-center text-2xl font-semibold text-red-600 ">
             YOU
           </span>

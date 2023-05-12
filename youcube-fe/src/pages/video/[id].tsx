@@ -119,7 +119,7 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
             )}
           </div>
 
-          <div className="mt-3 pl-5">
+          {/* <div className="mt-3 pl-5">
             {comment.parent_uuid === null && !isEditing && (
               <textarea
                 className="w-full resize-none rounded-md border-2 border-transparent p-2 focus:border-red-300 focus:outline-none focus:ring-0"
@@ -137,8 +137,8 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
                 }}
               />
             )}
-          </div>
-          <div
+          </div> */}
+          {/* <div
             className={`${
               newMessage.length > 0 ? "flex" : "hidden"
             } justify-end`}
@@ -156,9 +156,9 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
             >
               SENT
             </button>
-          </div>
+          </div> */}
           <div>
-            {children?.map((singleComment) => (
+            {/* {children?.map((singleComment) => (
               <div className="pl-5">
                 <SingleComment
                   comment={singleComment}
@@ -166,7 +166,7 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
                   allComments={allComments}
                 />
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
