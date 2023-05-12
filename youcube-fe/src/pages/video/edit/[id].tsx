@@ -7,7 +7,10 @@ import LoadingOverlay from "react-loading-overlay";
 import { toast } from "react-toastify";
 
 import { useUserSessionContext } from "@/modules/contexts/userContext";
-import { UpdateVideoMutation } from "@/modules/mutations/VideoMutations";
+import {
+  DeleteVideoMutation,
+  UpdateVideoMutation,
+} from "@/modules/mutations/VideoMutations";
 import { GetTagsQuery } from "@/modules/queries/TagsQuery";
 import { GetVideoQuery } from "@/modules/queries/VideoQuery";
 
@@ -16,7 +19,12 @@ const CreateVideo = () => {
   const router = useRouter();
   const { mutateAsync, isError, error, isSuccess, isLoading } =
     UpdateVideoMutation();
-
+  const {
+    mutateAsync: deleteVideo,
+    isLoading: isVideoDeleteing,
+    isSuccess: isVideoDeletingSuccess,
+    isError: isVideoDLTError,
+  } = DeleteVideoMutation();
   const [title, setTitle] = useState<string>("");
   const [tag, setTag] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
@@ -50,6 +58,14 @@ const CreateVideo = () => {
   }, [isError, error]);
 
   useEffect(() => {
+    if (isVideoDLTError) {
+      toast("Došlo k chybě", {
+        type: "error",
+      });
+    }
+  }, [isVideoDLTError]);
+
+  useEffect(() => {
     if (isSuccess) {
       toast("Video bylo úspěšně upraveno", {
         type: "success",
@@ -57,6 +73,15 @@ const CreateVideo = () => {
       router.push("/");
     }
   }, [isSuccess, router]);
+
+  useEffect(() => {
+    if (isVideoDeletingSuccess) {
+      toast("Video bylo úspěšně smazáno", {
+        type: "success",
+      });
+      router.push("/");
+    }
+  }, [isVideoDeletingSuccess, router]);
 
   const onClick = async () => {
     if (!user || !user.jwt) return;
@@ -77,7 +102,7 @@ const CreateVideo = () => {
     <LoadingOverlay
       className="h-screen w-full"
       spinner
-      active={isLoading}
+      active={isLoading || isVideoDeleteing}
       text="Načítání..."
     >
       <div className="flex h-screen w-full flex-col items-center justify-center bg-white p-6 pt-16 text-black">
@@ -165,6 +190,9 @@ const CreateVideo = () => {
               Save
             </button>
             <button
+              onClick={async () => {
+                await deleteVideo((router.query.id as unknown as string) ?? "");
+              }}
               type="submit"
               className="rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"
             >
