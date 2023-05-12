@@ -196,9 +196,9 @@ export const Video = () => {
   if (videoData?.video?.error) return <div>{videoData?.video?.error}</div>;
   if (videoData?.video)
     return (
-      <div className="mt-16 h-full min-h-screen w-full bg-white pr-20 pl-10 text-gray-600">
-        <div className="flex h-screen w-full flex-row">
-          <div className="h-screen w-4/5">
+      <div className="mt-16 h-full min-h-screen w-full bg-white p-5 text-gray-600 lg:pr-20 lg:pl-10">
+        <div className="flex h-screen w-full flex-col lg:flex-row">
+          <div className="h-screen w-full lg:w-4/5">
             <iframe
               width="100%"
               height="70%"
@@ -292,6 +292,7 @@ export const Video = () => {
                     rows={5}
                     placeholder="Write a comment..."
                     {...register("comment")}
+                    maxLength={100}
                   />
                   <button
                     className="rounded-lg  bg-red-500 py-2 px-5 text-black"
@@ -305,7 +306,7 @@ export const Video = () => {
               {getComments()}
             </div>
           </div>
-          <div className="h-full w-1/5 flex-col p-5">
+          <div className="hidden h-full w-1/5 flex-col p-5 lg:visible lg:flex">
             <h1>Recomended</h1>
             {getVideos}
           </div>
