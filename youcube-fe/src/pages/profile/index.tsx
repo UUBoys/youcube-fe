@@ -99,7 +99,9 @@ const Profile = () => {
               fetchedUser &&
               fetchedUser?.videos?.map((video: ISingleVIdeo) => (
                 <div className="flex flex-col space-y-2">
-                  <Thumbnail key={video.uuid} video={video} />
+                  <div className="h-[280px] w-[400px]">
+                    <Thumbnail key={video.uuid} video={video} />
+                  </div>
                   <div className="my-2 grid grid-cols-2 gap-4">
                     <button
                       className="rounded border-2 border-red-500 bg-red-500 py-2 px-4 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-white hover:text-red-500 hover:shadow-lg"
