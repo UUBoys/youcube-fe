@@ -33,18 +33,12 @@ interface ICommentVideoForm {
   refetchVideo: () => void;
 }
 
-const SingleComment: React.FC<ICommentVideoForm> = ({
-  comment,
-  refetchVideo,
-  allComments,
-}) => {
-  const router = useRouter();
+const SingleComment: React.FC<{
+  comment: IComment;
+  refetchVideo: () => void;
+}> = ({ comment, refetchVideo }) => {
   const user = useUserSessionContext();
   const [isEditing, setIsEditing] = React.useState(false);
-  const [newMessage, setNewMessage] = React.useState<string>("");
-  const handleNewMessageChange = (e: any) => setNewMessage(e.target.value);
-
-  const children = allComments?.filter((c) => c.parent_uuid === comment.uuid);
 
   const {
     mutateAsync: mutateRemoveComment,
@@ -54,18 +48,11 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
   const { mutateAsync: mutateEditComment, isLoading: isLoadingEditComment } =
     UpdateCommentMutation();
 
-  const {
-    mutateAsync: mutateCreateComment,
-    isLoading: isLoadingCreateComment,
-  } = CreateCommentMutation();
-
   return (
     // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
       spinner
-      active={
-        isRemoveCommentLoading || isLoadingEditComment || isLoadingCreateComment
-      }
+      active={isRemoveCommentLoading || isLoadingEditComment}
       text="Načítání..."
     >
       <div
@@ -113,60 +100,24 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
               <textarea
                 className="w-full rounded-md border-2 border-gray-300 p-2 focus:border-red-300 focus:outline-none focus:ring-0"
                 defaultValue={comment.message}
+                onBlur={async (e) => {
+                  if (e.target.value === "") {
+                    await mutateRemoveComment(comment.uuid);
+                    refetchVideo();
+                    setIsEditing(!isEditing);
+                    return;
+                  }
+                  await mutateEditComment({
+                    uuid: comment.uuid,
+                    message: e.target.value,
+                  });
+                  refetchVideo();
+                  setIsEditing(!isEditing);
+                }}
               />
             ) : (
               <p>{comment.message}</p>
             )}
-          </div>
-
-          {/* <div className="mt-3 pl-5">
-            {comment.parent_uuid === null && !isEditing && (
-              <textarea
-                className="w-full resize-none rounded-md border-2 border-transparent p-2 focus:border-red-300 focus:outline-none focus:ring-0"
-                defaultValue=""
-                placeholder="New comment"
-                onChange={handleNewMessageChange}
-                value={newMessage}
-                onBlur={async () => {
-                  if (newMessage === "") return;
-                  await mutateCreateComment({
-                    message: newMessage,
-                    video_uuid: router.query.id as string,
-                    parent_uuid: comment.uuid,
-                  });
-                }}
-              />
-            )}
-          </div> */}
-          {/* <div
-            className={`${
-              newMessage.length > 0 ? "flex" : "hidden"
-            } justify-end`}
-          >
-            <button
-              className="rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"
-              onClick={async () => {
-                await mutateEditComment({
-                  uuid: comment.uuid,
-                  message: newMessage,
-                });
-                refetchVideo();
-                setIsEditing(!isEditing);
-              }}
-            >
-              SENT
-            </button>
-          </div> */}
-          <div>
-            {/* {children?.map((singleComment) => (
-              <div className="pl-5">
-                <SingleComment
-                  comment={singleComment}
-                  refetchVideo={refetchVideo}
-                  allComments={allComments}
-                />
-              </div>
-            ))} */}
           </div>
         </div>
       </div>
@@ -218,7 +169,6 @@ export const Video = () => {
           }}
           key={comment.uuid}
           comment={comment}
-          allComments={videoData?.video?.comments}
         />
       );
     });

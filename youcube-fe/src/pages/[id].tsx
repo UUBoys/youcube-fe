@@ -48,10 +48,11 @@ const HomeFilter: NextPage = () => {
           {tags?.map((tag) => (
             <Link
               href={`/${tag.id}`}
-              className={`${parseFloat(query.id as string) === tag.id
-                ? "bg-black text-white"
-                : "bg-gray-600 text-white"
-                } ml-3 mb-3 rounded p-3`}
+              className={`${
+                parseFloat(query.id as string) === tag.id
+                  ? "bg-black text-white"
+                  : "bg-gray-600 text-white"
+              } ml-3 mb-3 rounded p-3`}
             >
               {tag.name}
             </Link>
