@@ -150,7 +150,7 @@ export const Video = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCommentSendSubmit = async (data: any) => {
-    if (!user || !user.jwt) return;
+    if (!user || !user.jwt || data?.comment === "" || !data?.comment) return;
     await mutateAsyncCreateComment({
       message: data.comment,
       video_uuid: id as string,
