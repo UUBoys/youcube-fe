@@ -32,7 +32,7 @@ const Edit = () => {
         },
       });
       router.push("/profile");
-      toast("Video bylo úspěšně nahráno", {
+      toast("Profil byl úspěšně upraven.", {
         type: "success",
       });
     }
