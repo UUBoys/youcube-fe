@@ -81,6 +81,7 @@ const CreateVideo = () => {
               onChange={(e) => setTitle(e.target.value)}
               value={title}
               maxLength={255}
+              required
             />
           </div>
 
@@ -96,6 +97,7 @@ const CreateVideo = () => {
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-0 placeholder:text-gray-600 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-600 dark:focus:border-red-500 dark:focus:ring-red-500"
               onChange={(e) => setTag(parseFloat(e.target.value))}
               value={tag}
+              required
             >
               {tags &&
                 tags?.map((option: any) => (
@@ -120,6 +122,7 @@ const CreateVideo = () => {
               onChange={(e) => setDescription(e.target.value)}
               value={description}
               maxLength={255}
+              required
             />
           </div>
           <div className="mb-6">
@@ -136,6 +139,7 @@ const CreateVideo = () => {
               onChange={(e) => setUrl(e.target.value)}
               value={url}
               maxLength={255}
+              required
             />
           </div>
           <div className="flex w-full items-center justify-center">
