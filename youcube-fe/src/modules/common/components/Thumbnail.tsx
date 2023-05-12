@@ -106,7 +106,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             })}
           </p>
         </div>
-
       </div>
     </Link>
   );

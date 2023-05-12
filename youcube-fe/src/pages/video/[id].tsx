@@ -59,7 +59,6 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
     isLoading: isLoadingCreateComment,
   } = CreateCommentMutation();
 
-
   return (
     // @ts-ignore broken definition of LoadingOverlay
     <LoadingOverlay
@@ -120,8 +119,6 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
             )}
           </div>
 
-
-
           <div className="mt-3 pl-5">
             {comment.parent_uuid === null && !isEditing && (
               <textarea
@@ -141,15 +138,22 @@ const SingleComment: React.FC<ICommentVideoForm> = ({
               />
             )}
           </div>
-          <div className={`${newMessage.length > 0 ? "flex" : "hidden"} justify-end`}>
-            <button className={"rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"} onClick={async (e) => {
-              await mutateEditComment({
-                uuid: comment.uuid,
-                message: newMessage,
-              });
-              refetchVideo();
-              setIsEditing(!isEditing);
-            }}>
+          <div
+            className={`${
+              newMessage.length > 0 ? "flex" : "hidden"
+            } justify-end`}
+          >
+            <button
+              className="rounded border-2 border-red-500 py-2 px-4 text-center font-medium uppercase text-red-500 shadow transition hover:-translate-y-0.5 hover:bg-red-500 hover:text-white hover:shadow-lg"
+              onClick={async () => {
+                await mutateEditComment({
+                  uuid: comment.uuid,
+                  message: newMessage,
+                });
+                refetchVideo();
+                setIsEditing(!isEditing);
+              }}
+            >
               SENT
             </button>
           </div>

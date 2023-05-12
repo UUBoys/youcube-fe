@@ -14,7 +14,8 @@ import { GetVideoQuery } from "@/modules/queries/VideoQuery";
 const CreateVideo = () => {
   const user = useUserSessionContext();
   const router = useRouter();
-  const { mutateAsync, isError, error, isSuccess, isLoading } = UpdateVideoMutation();
+  const { mutateAsync, isError, error, isSuccess, isLoading } =
+    UpdateVideoMutation();
 
   const [title, setTitle] = useState<string>("");
   const [tag, setTag] = useState<number>(0);

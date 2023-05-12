@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { useMutation } from "react-query";
 
 import { useUserSessionContext } from "../contexts/userContext";
