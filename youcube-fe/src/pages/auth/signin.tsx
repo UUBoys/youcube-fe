@@ -100,14 +100,14 @@ export const SignIn = () => {
                 type="submit"
                 className="w-full rounded-lg bg-secondary-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-primary-200 focus:outline-none focus:ring-4  "
               >
-                Přihlásit se
+                Log in
               </button>
             </form>
             <Link
               href="/auth/signup"
               className="mt-3 block text-center text-sm font-light text-gray-600 dark:text-white"
             >
-              Nemáte účet? Zaregistrujte se
+              Register here
             </Link>
           </div>
         </div>{" "}

@@ -140,14 +140,14 @@ const SignUp: React.FC = () => {
               type="submit"
               className="w-full rounded-lg bg-secondary-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-all hover:bg-primary-200 focus:outline-none focus:ring-4  "
             >
-              Registrovat
+              Register
             </button>
           </form>
           <Link
             href="/auth/signin"
             className="mt-3 block text-center text-sm font-light text-gray-600 dark:text-white"
           >
-            Máte účet? Přihlašte se
+            Login here
           </Link>
         </div>
       </div>

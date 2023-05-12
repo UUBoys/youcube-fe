@@ -106,13 +106,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             })}
           </p>
         </div>
-        <Image
-          src="https://this-person-does-not-exist.com/img/avatar-gen11335f91b926306570a611f1e89a927d.jpg"
-          alt="Profile"
-          width={80}
-          height={80}
-          className="absolute right-2 bottom-7 rounded-full border-2 border-white"
-        />
+
       </div>
     </Link>
   );
